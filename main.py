@@ -1,6 +1,7 @@
 import sys
 import os
 import re
+from BT.Adaptador.Adaptador import *
 from BT.src.adaptador import *
 from BT.Sniffer import *
 #creamos una lista de plataformas permitidas
@@ -26,7 +27,9 @@ def MostrarInterfacesBT():
     print(str(i)+"\t"+iface)
 
 def sniffear(interfaz):
-  print("interfaz elejida: "+interfaz)
+  adaptador1= Adaptador(interfaz)
+  mi_sniffer = Sniffer(adaptador1)
+  mi_sniffer.run()
 
 
 def main() -> None:

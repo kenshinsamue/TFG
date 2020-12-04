@@ -20,15 +20,25 @@ def GetObjectManager():
   return controlador.GetManagedObjects()
 
 
-# Este metodo sirve para obtener los diferentes adaptadores dentro del sistema
-  # para ello buscara dentro del bus cuales estan registrados dentro de las direcciones y retornara el primero
-def GetAdaptador(pattern=None):
+def GetAdaptadorBus(pattern=None):
   objetos = GetObjectManager()
   for path, ifaces in objetos.items():
     adaptador = ifaces.get(INTERFAZ_DE_ADAPTADOR)
     if adaptador is not None:
       if pattern is None:
         return BUS_DEL_SISTEMA.get(SERVICIO_BLUEZ,path)[INTERFAZ_DE_ADAPTADOR]
+  else:
+    raise BlueZDBusException("Adaptador bluetooth no encontrado")
+
+# Este metodo sirve para obtener los diferentes adaptadores dentro del sistema
+# para ello buscara dentro del bus cuales estan registrados dentro de las direcciones y retornara el primero
+def GetAdaptador(identificador=None):
+  objetos = GetObjectManager()
+  for path,ifaces in objetos.items():
+    if path == identificador:
+      adaptador = ifaces.get(INTERFAZ_DE_ADAPTADOR)
+      if identificador is not None:
+        return adaptador
   else:
     raise BlueZDBusException("Adaptador bluetooth no encontrado")
 

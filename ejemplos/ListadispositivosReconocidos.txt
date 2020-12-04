@@ -1,0 +1,25 @@
+('/org/bluez/hci0/dev_19_4F_D8_1D_AD_A2',
+ {'org.freedesktop.DBus.Introspectable': {},
+  'org.bluez.Device1': {
+    'Address': '19:4F:D8:1D:AD:A2', 
+    'AddressType': 'random', 
+    'Alias': '19-4F-D8-1D-AD-A2', 
+    'Paired': False, 
+    'Trusted': False, 
+    'Blocked': False, 
+    'LegacyPairing': False, 
+    'RSSI': -62, 
+    Connected': False, 
+    'UUIDs': [], 
+    'Adapter': '/org/bluez/hci0', 
+    'ManufacturerData': {
+      6: [1, 9, 32, 2, 138, 13, 47, 196, 103, 117, 112, 202, 145, 1, 15, 26, 9, 99, 136, 62, 81, 189, 118, 223, 255, 183, 55]
+      }, 
+    'ServicesResolved': False}, 
+    'org.freedesktop.DBus.Properties': {}
+  }
+)
+('/org/bluez/hci0/dev_6C_4A_85_14_65_F2', {'org.freedesktop.DBus.Introspectable': {}, 'org.bluez.Device1': {'Address': '6C:4A:85:14:65:F2', 'AddressType': 'public', 'Alias': '6C-4A-85-14-65-F2', 'Paired': False, 'Trusted': False, 'Blocked': False, 'LegacyPairing': False, 'RSSI': -89, 'Connected': False, 'UUIDs': [], 'Adapter': '/org/bluez/hci0', 'ManufacturerData': {76: [16, 5, 1, 20, 53, 10, 90]}, 'TxPower': 12, 'ServicesResolved': False}, 'org.freedesktop.DBus.Properties': {}})
+('/org/bluez/hci0/dev_0C_62_A6_8A_70_64', {'org.freedesktop.DBus.Introspectable': {}, 'org.bluez.Device1': {'Address': '0C:62:A6:8A:70:64', 'AddressType': 'public', 'Name': 'Percee TV', 'Alias': 'Percee TV', 'Class': 3671100, 'Icon': 'audio-card', 'Paired': False, 'Trusted': False, 'Blocked': False, 'LegacyPairing': False, 'RSSI': -87, 'Connected': False, 'UUIDs': [], 'Adapter': '/org/bluez/hci0', 'ServicesResolved': False}, 'org.freedesktop.DBus.Properties': {}})
+('/org/bluez/hci0/dev_84_C0_EF_CD_B2_5E', {'org.freedesktop.DBus.Introspectable': {}, 'org.bluez.Device1': {'Address': '84:C0:EF:CD:B2:5E', 'AddressType': 'public', 'Name': '[TV] Samsung 6 Series (55)', 'Alias': '[TV] Samsung 6 Series (55)', 'Paired': False, 'Trusted': False, 'Blocked': False, 'LegacyPairing': False, 'RSSI': -94, 'Connected': False, 'UUIDs': [], 'Adapter': '/org/bluez/hci0', 'ManufacturerData': {117: [66, 4, 1, 1, 110, 132, 192, 239, 205, 178, 94, 134, 192, 239, 205, 178, 93, 1, 0, 0, 0, 0, 0, 0]}, 'ServicesResolved': False}, 'org.freedesktop.DBus.Properties': {}})
+('/org/bluez/hci0/dev_C8_D7_A1_7A_3B_18', {'org.freedesktop.DBus.Introspectable': {}, 'org.bluez.Device1': {'Address': 'C8:D7:A1:7A:3B:18', 'AddressType': 'random', 'Name': 'HS_B26', 'Alias': 'HS_B26', 'Paired': False, 'Trusted': False, 'Blocked': False, 'LegacyPairing': False, 'RSSI': -63, 'Connected': False, 'UUIDs': ['00000001-0000-1000-8000-00805f9b34fb'], 'Adapter': '/org/bluez/hci0', 'ManufacturerData': {13145: [200, 215, 161, 122, 59, 24]}, 'ServicesResolved': False}, 'org.freedesktop.DBus.Properties': {}})
