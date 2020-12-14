@@ -35,7 +35,7 @@ def sniffear(interfaz):
   mi_sniffer = Sniffer(adaptador1)
   mi_sniffer.run()
   resultado =mi_sniffer.GetDispositivoElegido()
-  print("{}".format(resultado))
+  
 
 
 def LeerConsola():
