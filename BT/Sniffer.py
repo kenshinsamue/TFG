@@ -1,8 +1,12 @@
 from BT.Adaptador.Adaptador import *
 from BT.Adaptador.Dispositivo import *
 from gi.repository import GLib
+import scapy.all as scapy
+from scapy.layers import bluetooth
 import os
+import signal
 import re
+import keyboard
 class Sniffer(object):
   def __init__(self,adaptador):
     self.registro = list()
@@ -15,8 +19,30 @@ class Sniffer(object):
     self.adaptador_local.EliminarDispositivos()     # eliminamos los dispositivos registrados previamente
     self.CrearSignals()
     loop = GLib.MainLoop()
-    loop.run()
+    try:
+      loop.run()
+    except KeyboardInterrupt:
+      loop.quit()
+    # contador = 0
+    self.eleccion = self.ElegirInterfaz()
+    # for device in self.registro:
+    #   if contador == destino:
+    #     resultado = device
+    #   contador = contador +1
+    # print ("el resultado es : {}".format(resultado))
+    # return resultado
 
+  def GetDispositivoElegido(self):
+    return self.registro[self.eleccion]
+
+    
+  def ElegirInterfaz(self):
+    opcion =0
+    while opcion<=0 or opcion> len(self.registro):
+      self.MostrarDispositivosEncontrados()
+      print("Eliga el dispositivo al que quiere connectar")
+      opcion = int(input())
+    return opcion-1 
 
   #metodo para gestionar las senales 
   def CrearSignals(self):
@@ -51,6 +77,11 @@ class Sniffer(object):
     (path,interfaces) = params
     if INTERFAZ_DE_DISPOSITIVO in interfaces:
       self.RegistrarDispositivo(Dispositivo.CrearInstancia(path,interfaces[INTERFAZ_DE_DISPOSITIVO]))
+      self.ProbarScapy()
+
+  def ProbarScapy(self):
+    bt = scapy.BluetoothHCISocket(0)
+    # paquetes =bt.sniff(prn=process_packet)
 
 
   def EliminarInterfaz(self,sender,obj,iface,signal,params):
@@ -80,6 +111,8 @@ class Sniffer(object):
 
   def MostrarDispositivosEncontrados(self):
     os.system('clear')
-    print("BID\t\t BD_ADDR\t\t   rssi")
+    print("BID\t\t BD_ADDR\t    rssi")
+    numero =1
     for device in self.registro:
-      print("{}".format(device))
+      print("{}) {}".format(numero,device))
+      numero = numero+1

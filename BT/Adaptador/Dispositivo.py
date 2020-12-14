@@ -44,6 +44,13 @@ class Dispositivo(object):
     print("{}".format(self))
 
   def __str__ (self) -> str:
-    name = self.nombre if self.nombre is not None else "Desconocido\t"
+
+    if self.nombre is not None:
+      name = self.nombre
+      if(len(name)<16):
+        while len(name) < 16:
+          name = name + " "
+    else:
+      name = "Desconocido\t"      
     rssi = self.rssis[-1] if len(self.rssis) > 0 else -120
-    return "{} {} {}dBa {}".format(name[0:16],self.direccion,rssi,self.conectado)
+    return "{} {} {}dBa".format(name[0:16],self.direccion,rssi)

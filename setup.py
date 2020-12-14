@@ -17,7 +17,8 @@ setup(
     license = "BSD",
     keywords = "",
     url = "https://github.com/kenshinsamue/TFG",
-    packages=['BT', 'tests'],
+    packages=['BT', 'tests','terminal'],
+    py_modules=['idlelib'],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Utilities",

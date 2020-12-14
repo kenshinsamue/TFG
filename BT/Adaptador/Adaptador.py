@@ -1,4 +1,4 @@
-from BT.src.adaptador import *
+from BT.src.dbus_bluez import *
 import re
 class Adaptador(object):
   def __init__(self,identificador):
@@ -9,7 +9,8 @@ class Adaptador(object):
       self.CrearAtributos(self.adaptador)
     except:
       print("Error al intentar obtener el adaptador")
-
+  def getid(self):
+    return self.id
   def GetAdaptadorBT(self):
     return BUS_DEL_SISTEMA.get(SERVICIO_BLUEZ,self.ruta)[INTERFAZ_DE_ADAPTADOR]
   
