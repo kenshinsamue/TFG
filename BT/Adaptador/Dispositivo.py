@@ -1,16 +1,12 @@
 
 from typing import *
 
-
-
 class GATTServicio(object):
   def __init__(self,uuid:str,primary:bool):
     self.uuid = uuid
     self.primary = primary
-    
 
-
-
+# objeto que representa el controlador remoto    
 class Dispositivo(object):
   @classmethod
   def CrearInstancia(cls,path:str,data:Dict[str,Any]) -> "Dispositivo":

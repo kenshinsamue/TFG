@@ -1,5 +1,7 @@
 from BT.src.dbus_bluez import *
 import re
+
+# Clase del adaptador local 
 class Adaptador(object):
   def __init__(self,identificador):
     try:
