@@ -8,10 +8,10 @@ class Sniffer(object):
     self.AdaptadorLocal = Adaptador(adaptador)
     self.AdaptadorLocal.SetAdaptadorPropiedad("Discoverable","True")
   
-  def ReceptorPaquete(selfpkt):
+  def ReceptorPaquete(self,pkt):
     pkt.show()
 
   def start (self):
     bt = BluetoothHCISocket(0)
-    bt.sniff(prn=ReceptorPaquete)
+    bt.sniff(prn=self.ReceptorPaquete)
   
