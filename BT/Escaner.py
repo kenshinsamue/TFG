@@ -7,7 +7,10 @@ import os
 import signal
 import re
 import keyboard
-class Sniffer(object):
+
+# Clase de escaner mediante la libreria bluez y pydbus
+class Escaner(object):
+  # Constructor del objeto, le especificamos que queremos que realize una busqueda para ambos protocolos tanto bd/edr como LE
   def __init__(self,adaptador):
     self.registro = list()
     self.adaptador_local= adaptador
@@ -15,7 +18,7 @@ class Sniffer(object):
     self.interfaz.SetDiscoveryFilter({"Transport": pydbus.Variant("s","auto")})
     self.interfaz.StartDiscovery()
 
-  def run (self):
+  def run (self,retornar=False):
     self.adaptador_local.EliminarDispositivos()     # eliminamos los dispositivos registrados previamente
     self.CrearSignals()
     loop = GLib.MainLoop()
@@ -23,14 +26,9 @@ class Sniffer(object):
       loop.run()
     except KeyboardInterrupt:
       loop.quit()
-    # contador = 0
-    self.eleccion = self.ElegirInterfaz()
-    # for device in self.registro:
-    #   if contador == destino:
-    #     resultado = device
-    #   contador = contador +1
-    # print ("el resultado es : {}".format(resultado))
-    # return resultado
+    if(retornar == True):
+      self.eleccion = self.ElegirInterfaz()
+
 
   def GetDispositivoElegido(self):
     return self.registro[self.eleccion]
@@ -58,30 +56,12 @@ class Sniffer(object):
       signal="InterfacesRemoved",
       signal_fired=self.EliminarInterfaz
     )
-    BUS_DEL_SISTEMA.subscribe(
-      sender = SERVICIO_BLUEZ,
-      iface= CONTROLADOR_DE_OBJETOS,
-      signal="PropertiesChanged",
-      arg0=INTERFAZ_DE_DISPOSITIVO,
-      signal_fired = self.CambiarPropiedad
-    )
 
-  def CambiarPropiedad(self,sender,obj,iface,signal,params):
-    print("{}".format(obj))
-    if INTERFAZ_DE_DISPOSITIVO in params:
-      device = EncontrarDispositivoPath(obj)
-      if device is not None:
-        print ("un dispositivo cambio")
-  # si se detecta un nuevo dispositivo 
   def AgregarInterfaz(self,sender,obj,iface,signal,params):
     (path,interfaces) = params
     if INTERFAZ_DE_DISPOSITIVO in interfaces:
       self.RegistrarDispositivo(Dispositivo.CrearInstancia(path,interfaces[INTERFAZ_DE_DISPOSITIVO]))
-      self.ProbarScapy()
-
-  def ProbarScapy(self):
-    bt = scapy.BluetoothHCISocket(0)
-    # paquetes =bt.sniff(prn=process_packet)
+      
 
 
   def EliminarInterfaz(self,sender,obj,iface,signal,params):

@@ -9,9 +9,11 @@ PLATAFORMAS_PERMITIDAS = {'linux'}
 
 # leemos comandos cortos desde consola
 def LeerConsola():
+  # ejecutamos el sniffer a travez de un controlador generico bluetooth (scapy)
   if(sys.argv[1]=='--sniff' or sys.argv[1]=='-S'):
-    #sniffear(sys.argv[2])
+    Sniffear(sys.argv[2])
     pass
+  # escaneamos los dispositivos en el area (scapy,bluez)
   if(sys.argv[1]=='--scan' or sys.argv[1]=='-s'):
     Escanear(sys.argv[2])
 
