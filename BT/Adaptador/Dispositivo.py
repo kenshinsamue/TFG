@@ -36,6 +36,10 @@ class Dispositivo(object):
     self.rssis = [rssi]
     self.tx_power = tx_power
   
+  @property
+  def Direccion(self):
+    return self.direccion
+    
   def MostrarDispositivo(self):
     print("{}".format(self))
 
