@@ -2,6 +2,8 @@ from BT.Adaptador.Adaptador import *
 from BT.src.dbus_bluez import *
 from BT.Escaner import *
 from BT.Sniffer import *
+from pyubertooth.ubertooth import *
+from pyubertooth.bluetooth_packet import BtbbPacket
 
 # metodo que se encarga de obtener una lista con las interfaces de los controladores locales disponibles
 def ObtenerInterfacesSistema():
@@ -55,7 +57,14 @@ def Sniffear(interfaz):
   mi_sniffer =  Sniffer(interfaz,remoto)
   mi_sniffer.start()
 
-
+def Escaneo_Ubertooth():
+  ut = Ubertooth()
+  canal = 1
+  for data in ut.rx_stream():
+    ut.set_channel((canal%40) + 1)
+    print (BtbbPacket(data=data))
+    canal+=1
+  ut.close()
 
 
   

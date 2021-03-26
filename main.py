@@ -16,6 +16,8 @@ def LeerConsola():
   # escaneamos los dispositivos en el area (scapy,bluez)
   if(sys.argv[1]=='--scan' or sys.argv[1]=='-s'):
     Escanear(sys.argv[2])
+  if(sys.argv[1]=='--ubertooth' or sys.argv[1]=='-u'):
+    Escaneo_Ubertooth()
 
 
 # menu en el cual podemos elegir que hacer
