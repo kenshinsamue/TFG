@@ -79,7 +79,7 @@ class Ubertooth(object):
             buf = self.device.read(0x82, 64)
             if count is not None:
                 if i >= count:
-                    print i
+                    print (i)
                     break
                 i += 1
             if secs is not None:
@@ -397,5 +397,5 @@ class Ubertooth(object):
             data[i*3] = reg & 0xFF
             data[(i*3)+1] = (registers[reg]>>8) & 0xFF
             data[(i*3)+2] = registers[reg] & 0xFF
-        print data
+        print (data)
         self.device.ctrl_transfer(0x40, 65, count, 0, data)

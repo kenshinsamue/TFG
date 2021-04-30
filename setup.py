@@ -17,7 +17,7 @@ setup(
     license = "BSD",
     keywords = "",
     url = "https://github.com/kenshinsamue/TFG",
-    packages=['BT', 'tests','scapy'],
+    packages=['BT', 'tests','scapy','pyubertooth'],
     # py_modules=[''],
     classifiers=[
         "Development Status :: 3 - Alpha",
