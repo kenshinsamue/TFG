@@ -18,295 +18,12 @@ class E0 (object):
     self.LFSR1 = 0
     self.LFSR2 = 0
     self.LFSR3 = 0
-    self.c=0
-    self.c_next=0
-    self.c_prev=0
-    self.vector_0 = self.init_vector_LFSR0()
-    self.vector_1 = self.init_vector_LFSR1()
-
-
-
-  def init_vector_LFSR0 (self):
-    input_vector=0
-
-    # ADR[2]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.mac[4])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.mac[5])
-    input_vector = input_vector | bit
-
-    # CLK[1]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CLK[2])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CLK[3])
-    input_vector = input_vector | bit
-
-    # KC[12]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[24])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[25])
-    input_vector = input_vector | bit
-
-    # KC[8]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[16])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[17])
-    input_vector = input_vector | bit
-
-    # KC[4]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[8])
-    input_vector = input_vector | bit
+    self.c = 0
+    self.c_next = 0
+    self.c_prev = 0
     
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[9])
-    input_vector = input_vector | bit
 
-    # KC[0]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[0])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[1])
-    input_vector = input_vector | bit
-
-    # CL24
-    input_vector = input_vector << 1
-    bit = self.get_bit_value(self.hex_to_bit(self.CLK[6]),3)
-    input_vector = input_vector | bit
-
-    return input_vector
-
-  def init_vector_LFSR1 (self):
-    input_vector=0
-
-    # AD[3]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.mac[6])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.mac[7])
-    input_vector = input_vector | bit
-
-    # AD[0]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.mac[0])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.mac[1])
-    input_vector = input_vector | bit
-
-    # KC[13]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[26])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[27])
-    input_vector = input_vector | bit
-
-    # KC[9]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[18])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[19])
-    input_vector = input_vector | bit
-
-    # KC[5]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[10])
-    input_vector = input_vector | bit
-    
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[11])
-    input_vector = input_vector | bit
-
-    # KC[1]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[2])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[3])
-    input_vector = input_vector | bit
-
-    # CLK[0]L = [3,2,1,0]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CLK[0])
-    input_vector = input_vector | bit
-
-    # CTES 001
-    input_vector = input_vector << 3
-    bit = self.get_bit_value(1,1)
-    input_vector = input_vector | bit
-
-    return input_vector
-
-  def init_vector_LFSR2 (self):
-    input_vector=0
-
-    # AD[4]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.mac[8])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.mac[9])
-    input_vector = input_vector | bit
-
-    # CLK[2]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CLK[4])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CLK[5])
-    input_vector = input_vector | bit
-
-    # KC[14]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[28])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[29])
-    input_vector = input_vector | bit
-
-    # KC[10]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[20])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[21])
-    input_vector = input_vector | bit
-
-    # KC[6]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[12])
-    input_vector = input_vector | bit
-    
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[13])
-    input_vector = input_vector | bit
-
-    # KC[2]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[4])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[5])
-    input_vector = input_vector | bit
-
-    # CL25
-    input_vector = input_vector << 1
-    bit = self.get_bit_value(self.hex_to_bit(self.CLK[6]),2)
-    input_vector = input_vector | bit
-
-    return input_vector
-
-  def init_vector_LFSR3 (self):
-    input_vector=0
-
-    # AD[5]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.mac[10])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.mac[11])
-    input_vector = input_vector | bit
-
-    # AD[1]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.mac[2])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.mac[3])
-    input_vector = input_vector | bit
-
-    # KC[15]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[30])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[31])
-    input_vector = input_vector | bit
-
-    # KC[11]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[22])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[23])
-    input_vector = input_vector | bit
-
-    # KC[7]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[14])
-    input_vector = input_vector | bit
-    
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[15])
-    input_vector = input_vector | bit
-
-    # KC[3]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[6])
-    input_vector = input_vector | bit
-
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CK[7])
-    input_vector = input_vector | bit
-
-    # CLK[0]U = [7,6,5,4]
-    input_vector = input_vector << 4
-    bit = self.hex_to_bit(self.CLK[1])
-    input_vector = input_vector | bit
-
-    # CTES 111
-    input_vector = input_vector << 3
-    bit = 7
-    input_vector = input_vector | bit
-
-    return input_vector
-
-    
-  # Este metodo le indicaremos un valor numerico y la posicion del byte que nos interesa
-  def get_byte_value(self,valor,byte):
-    Byte = 15
-    Byte = Byte << (byte * 4)
-    resultado = valor & Byte
-    resultado = resultado >> (byte * 4)
-    return resultado
-# metodo que dado un byte, y una posicion dentro del mismo, nos retorna el valor del bit en esa posicion
-  def get_bit_value(self,valor,bit):
-    Bit = 1
-    Bit = Bit << bit
-    resultado = valor & Bit
-    resultado = resultado >> bit
-    return resultado
+############################ setter ##################################
 
   # Guardamos el valor del reloj, hasta 26b  
   def set_clk (self,clk):
@@ -335,6 +52,422 @@ class E0 (object):
     # print(self.UAP)
     # print(self.NAP)
   
+
+########### Inicializacion de los LFSR #####################
+  def init_vectores (self) :
+    self.vector_0 = self.init_vector_LFSR0()
+    self.vector_1 = self.init_vector_LFSR1()
+    self.vector_2 = self.init_vector_LFSR2()
+    self.vector_3 = self.init_vector_LFSR3() 
+
+  def init_LFSR (self):
+    for x in range(39):
+      if x < 25 :
+        #LFSR0
+        resultado = self.shift_LFSR(self.LFSR0,self.vector_0)
+        self.LFSR0 = resultado[0]
+        self.vector_0 = resultado[1]
+
+        #LFSR1
+        resultado = self.shift_LFSR(self.LFSR1,self.vector_1)
+        self.LFSR1 = resultado[0]
+        self.vector_1 = resultado[1]
+
+        #LFSR2
+        resultado = self.shift_LFSR(self.LFSR2,self.vector_2)
+        self.LFSR2 = resultado[0]
+        self.vector_2 = resultado[1]
+
+        #LFSR3
+        resultado = self.shift_LFSR(self.LFSR3,self.vector_3)
+        self.LFSR3 = resultado[0]
+        self.vector_3 = resultado[1]
+
+      if x < 31 and x >= 25:
+        #LFSR1
+        resultado = self.shift_LFSR(self.LFSR1,self.vector_1)
+        self.LFSR1 = resultado[0]
+        self.vector_1 = resultado[1]
+
+        #LFSR2
+        resultado = self.shift_LFSR(self.LFSR2,self.vector_2)
+        self.LFSR2 = resultado[0]
+        self.vector_2 = resultado[1]
+
+        #LFSR3
+        resultado = self.shift_LFSR(self.LFSR3,self.vector_3)
+        self.LFSR3 = resultado[0]
+        self.vector_3 = resultado[1]
+
+      if x < 33 and x >= 31:
+        #LFSR2
+        resultado = self.shift_LFSR(self.LFSR2,self.vector_2)
+        self.LFSR2 = resultado[0]
+        self.vector_2 = resultado[1]
+
+        #LFSR3
+        resultado = self.shift_LFSR(self.LFSR3,self.vector_3)
+        self.LFSR3 = resultado[0]
+        self.vector_3 = resultado[1]
+
+      if x >= 33:
+        #LFSR3
+        resultado = self.shift_LFSR(self.LFSR3,self.vector_3)
+        self.LFSR3 = resultado[0]
+        self.vector_3 = resultado[1]
+
+    print("LFSR0 = {}".format(hex(self.LFSR0)))
+    print("LFSR1 = {}".format(hex(self.LFSR1)))
+    print("LFSR2 = {}".format(hex(self.LFSR2)))
+    print("LFSR3 = {}".format(hex(self.LFSR3)))
+
+  def shift_LFSR(self,LFSR,vector):
+    bit = 1
+    valor = vector & bit
+    vector = vector >> 1
+    LFSR = LFSR << 1
+    LFSR = LFSR | valor
+    return LFSR, vector
+
+  def shift_LFSR0_accarreado(self):
+    pass
+
+########### inicializacion de los vectores que se usaran para rellenar los LFSR ###############
+
+  def init_vector_LFSR0 (self):
+    input_vector=0
+
+    # ADR[2]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.mac[6])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.mac[7])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # CLK[1]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CLK[4])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CLK[5])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # KC[12]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[6])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[7])
+    input_vector = input_vector | bit
+    
+    # print(hex(input_vector))
+
+    # KC[8]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[14])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[15])
+    input_vector = input_vector | bit
+    
+    # print(hex(input_vector))
+
+    # KC[4]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[22])
+    input_vector = input_vector | bit
+    
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[23])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+    # KC[0]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[30])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[31])
+    input_vector = input_vector | bit
+    # print(hex(input_vector))
+    # CL24
+    input_vector = input_vector << 1
+    bit = self.get_bit_value(self.hex_to_bit(self.CLK[1]),3)
+    input_vector = input_vector | bit
+    # print(hex(input_vector))
+    return input_vector
+
+  def init_vector_LFSR1 (self):
+    input_vector=0
+
+    # AD[3]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.mac[4])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.mac[5])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # AD[0]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.mac[10])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.mac[11])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # KC[13]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[4])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[5])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # KC[9]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[12])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[13])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # KC[5]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[20])
+    input_vector = input_vector | bit
+    
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[21])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # KC[1]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[28])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[29])
+    input_vector = input_vector | bit
+    
+    # print(hex(input_vector))
+
+    # CLK[0]L = [3,2,1,0]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CLK[7])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # CTES 001
+    input_vector = input_vector << 3
+    input_vector = input_vector | 1
+
+    # print(hex(input_vector))
+    return input_vector
+
+  def init_vector_LFSR2 (self):
+    input_vector=0
+
+    # AD[4]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.mac[2])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.mac[3])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # CLK[2]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CLK[2])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CLK[3])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # KC[14]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[2])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[3])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # KC[10]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[10])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[11])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # KC[6]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[18])
+    input_vector = input_vector | bit
+    
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[19])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # KC[2]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[26])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[27])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # CL25
+    input_vector = input_vector << 1
+    bit = self.get_bit_value(self.hex_to_bit(self.CLK[1]),1)
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+    # print("{0:b}".format(input_vector))
+    return input_vector
+
+  def init_vector_LFSR3 (self):
+    input_vector=0
+
+    # AD[5]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.mac[0])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.mac[1])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # AD[1]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.mac[8])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.mac[9])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # KC[15]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[0])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[1])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # KC[11]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[8])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[9])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+
+    # KC[7]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[16])
+    input_vector = input_vector | bit
+    
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[17])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+    # KC[3]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[24])
+    input_vector = input_vector | bit
+
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CK[25])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+    # CLK[0]U = [7,6,5,4]
+    input_vector = input_vector << 4
+    bit = self.hex_to_bit(self.CLK[6])
+    input_vector = input_vector | bit
+
+    # print(hex(input_vector))
+    # CTES 111
+    input_vector = input_vector << 3
+    bit = 7
+    input_vector = input_vector | bit
+
+    return input_vector
+
+
+
+
+########################## Bit y byte handlers ############################
+  # Este metodo le indicaremos un valor numerico y la posicion del byte que nos interesa
+  def get_byte_value(self,valor,byte):
+    Byte = 15
+    Byte = Byte << (byte * 4)
+    resultado = valor & Byte
+    resultado = resultado >> (byte * 4)
+    return resultado
+
+# metodo que dado un byte, y una posicion dentro del mismo, nos retorna el valor del bit en esa posicion
+  def get_bit_value(self,valor,bit):
+    Bit = 1
+    Bit = Bit << bit
+    resultado = valor & Bit
+    resultado = resultado >> bit
+    return resultado
+
   # Este metodo recibira un valor hexadecimal y devolvera el entero que representa su valor en bits
   def hex_to_bit (self,hex):
     resultado=0
@@ -405,11 +538,24 @@ class E0 (object):
     # print(a)
     return resultado
 
+
+############################################################################################################################
+
+
+
 hola = E0()
-hola.set_mac("AA:BB:CC:DD:EE:FF")
+hola.set_mac("1B:0F:56:94:7F:2C")
 # tmp = hola.get_byte_value(131241234,2)
 # tmp = hola.get_bit_value(131241234,4)
 # print("{0:b}".format(tmp))
 # hola.hex_to_bit("F")
-hola.set_clk("AABBCCDD")
-hola.set_Ck("00112233445566778899AABBCCDDEEFF")
+
+hola.set_clk("02001A5F")
+hola.set_Ck("633A15E0534C0D78D03190BA4AF08721")
+hola.init_vectores()
+hola.init_LFSR()
+
+# LFSR0 = 0x845d1e
+# LFSR1 = 0x4fe109b0
+# LFSR2 = 0x10f8c325c
+# LFSR3 = 0x7a520bcac6
