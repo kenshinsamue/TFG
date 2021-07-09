@@ -18,10 +18,15 @@ class E0 (object):
     self.LFSR1 = 0
     self.LFSR2 = 0
     self.LFSR3 = 0
+    self.size = [24,30,32,38]
     self.c = 0
     self.c_next = 0
     self.c_prev = 0
-    
+    self.feedback = [[0,5,13,17],
+                     [0,7,15,19],
+                     [0,5,9,29 ],
+                     [0,3,11,35]]
+    self.x = [0,0,0,0]          
 
 ############################ setter ##################################
 
@@ -84,6 +89,13 @@ class E0 (object):
         self.vector_3 = resultado[1]
 
       if x < 31 and x >= 25:
+        #LFSR 0
+        resultado = self.shift_LFSR_accarreado(self.LFSR0,self.vector_0,0)
+        self.LFSR0 = resultado[0]
+        self.vector_0 = resultado[1]        
+        self.x[0] = resultado[2]
+        # print("el vector es: {}".format(hex(self.LFSR0)))
+
         #LFSR1
         resultado = self.shift_LFSR(self.LFSR1,self.vector_1)
         self.LFSR1 = resultado[0]
@@ -100,6 +112,21 @@ class E0 (object):
         self.vector_3 = resultado[1]
 
       if x < 33 and x >= 31:
+
+        #LFSR 0
+        resultado = self.shift_LFSR_accarreado(self.LFSR0,self.vector_0,0)
+        self.LFSR0 = resultado[0]
+        self.vector_0 = resultado[1]        
+        self.x[0] = resultado[2]
+        #print("el vector es: {}".format(hex(self.LFSR0)))
+
+        #LFSR 1
+        resultado = self.shift_LFSR_accarreado(self.LFSR1,self.vector_1,1)
+        self.LFSR1 = resultado[0]
+        self.vector_1 = resultado[1]        
+        self.x[1] = resultado[2]
+        #print("el vector es: {}".format(hex(self.LFSR1)))
+
         #LFSR2
         resultado = self.shift_LFSR(self.LFSR2,self.vector_2)
         self.LFSR2 = resultado[0]
@@ -111,6 +138,28 @@ class E0 (object):
         self.vector_3 = resultado[1]
 
       if x >= 33:
+        #LFSR 0
+        resultado = self.shift_LFSR_accarreado(self.LFSR0,self.vector_0,0)
+        self.LFSR0 = resultado[0]
+        self.vector_0 = resultado[1]        
+        self.x[0] = resultado[2]
+        #print("el vector es: {}".format(hex(self.LFSR0)))
+
+        #LFSR 1
+        resultado = self.shift_LFSR_accarreado(self.LFSR1,self.vector_1,1)
+        self.LFSR1 = resultado[0]
+        self.vector_1 = resultado[1]        
+        self.x[1] = resultado[2]
+        #print("el vector es: {}".format(hex(self.LFSR1)))
+
+        #LFSR 0
+        resultado = self.shift_LFSR_accarreado(self.LFSR2,self.vector_2,2)
+        self.LFSR2 = resultado[0]
+        self.vector_2 = resultado[1]        
+        self.x[2] = resultado[2]
+        #print("el vector es: {}".format(hex(self.LFSR2)))
+        
+
         #LFSR3
         resultado = self.shift_LFSR(self.LFSR3,self.vector_3)
         self.LFSR3 = resultado[0]
@@ -122,6 +171,7 @@ class E0 (object):
     print("LFSR3 = {}".format(hex(self.LFSR3)))
 
   def shift_LFSR(self,LFSR,vector):
+    
     bit = 1
     valor = vector & bit
     vector = vector >> 1
@@ -129,8 +179,32 @@ class E0 (object):
     LFSR = LFSR | valor
     return LFSR, vector
 
-  def shift_LFSR0_accarreado(self):
-    pass
+  def shift_LFSR_accarreado(self,LFSR,vector,indice):
+    bit = 1
+    acarreado = vector & bit
+    vector = vector >> 1
+    for x in self.feedback[indice]: # obtenemos el valor acarreado
+        
+      tmp_bit = 1
+      tmp_bit = tmp_bit << (self.size[indice]-x)
+      resultado = tmp_bit & LFSR   # usamos AND porque queremos obtener el primer valor descrito 
+                                    # por el polinomio
+      resultado = resultado >> (self.size[indice]-x)    
+      acarreado = acarreado ^ resultado                         
+
+    #creamos la mascara para guardar el bit sobrante y acarrear
+    
+    mascara = bit << self.size[indice]
+    sobrante = LFSR & mascara
+    mascara = mascara -1
+    
+    # introducimos el proximo bit
+    LFSR = LFSR & mascara
+    LFSR = LFSR<< 1
+    LFSR = LFSR | acarreado
+
+    return LFSR,vector,sobrante
+      
 
 ########### inicializacion de los vectores que se usaran para rellenar los LFSR ###############
 
