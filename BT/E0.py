@@ -1,6 +1,7 @@
 # Creacion del algoritmo E0 para crear la clave cifrante del mensaje
 # Damos por hecho que los valores Hexadecimales son strings en mayuscula 
 class E0 (object):
+
   # BD_BDDR es la direccion en formato binario/decimal
   # CLK es el valor del reloj en bits/decimal
   # CK es el valor de la clave en bits/decimal
@@ -19,14 +20,16 @@ class E0 (object):
     self.LFSR2 = 0
     self.LFSR3 = 0
     self.size = [24,30,32,38]
-    self.c = 0
-    self.c_next = 0
-    self.c_prev = 0
+    self.z_1=0
+    self.z_2=0
+    self.c=0
     self.feedback = [[0,5,13,17],
                      [0,7,15,19],
                      [0,5,9,29 ],
                      [0,3,11,35]]
-    self.x = [0,0,0,0]          
+    self.x = [0,0,0,0]
+    self.clave=0
+              
 
 ############################ setter ##################################
 
@@ -59,6 +62,7 @@ class E0 (object):
   
 
 ########### Inicializacion de los LFSR #####################
+
   def init_vectores (self) :
     self.vector_0 = self.init_vector_LFSR0()
     self.vector_1 = self.init_vector_LFSR1()
@@ -165,11 +169,6 @@ class E0 (object):
         self.LFSR3 = resultado[0]
         self.vector_3 = resultado[1]
 
-    print("LFSR0 = {}".format(hex(self.LFSR0)))
-    print("LFSR1 = {}".format(hex(self.LFSR1)))
-    print("LFSR2 = {}".format(hex(self.LFSR2)))
-    print("LFSR3 = {}".format(hex(self.LFSR3)))
-
   def shift_LFSR(self,LFSR,vector):
     
     bit = 1
@@ -192,10 +191,11 @@ class E0 (object):
       resultado = resultado >> (self.size[indice]-x)    
       acarreado = acarreado ^ resultado                         
 
-    #creamos la mascara para guardar el bit sobrante y acarrear
+    # creamos la mascara para guardar el bit sobrante y acarrear
     
     mascara = bit << self.size[indice]
     sobrante = LFSR & mascara
+    sobrante = sobrante >> self.size[indice]
     mascara = mascara -1
     
     # introducimos el proximo bit
@@ -205,6 +205,82 @@ class E0 (object):
 
     return LFSR,vector,sobrante
       
+
+########### Acarreo de 200 iteraciones #####################
+
+  def clocking(self):
+    result =0
+    for x in range(200):
+      #LFSR 0
+      resultado = self.shift_LFSR_accarreado(self.LFSR0,self.vector_0,0)
+      self.LFSR0 = resultado[0]
+      self.vector_0 = resultado[1]        
+      self.x[0] = resultado[2]
+
+      #LFSR 1
+      resultado = self.shift_LFSR_accarreado(self.LFSR1,self.vector_1,1)
+      self.LFSR1 = resultado[0]
+      self.vector_1 = resultado[1]        
+      self.x[1] = resultado[2]
+
+      #LFSR 2
+      resultado = self.shift_LFSR_accarreado(self.LFSR2,self.vector_2,2)
+      self.LFSR2 = resultado[0]
+      self.vector_2 = resultado[1]        
+      self.x[2] = resultado[2]
+      
+
+      #LFSR3
+      resultado = self.shift_LFSR_accarreado(self.LFSR3,self.vector_3,3)
+      self.LFSR3 = resultado[0]
+      self.vector_3 = resultado[1]        
+      self.x[3] = resultado[2]
+
+      c = self.blend()
+      XResultantes=0
+      for x in self.x:
+        XResultantes = XResultantes^x
+      result = result << 1
+      result = result  | (c^XResultantes)
+    print("{}   {}   {}   {}".format(hex(self.LFSR0),hex(self.LFSR1),hex(self.LFSR2),hex(self.LFSR3)))
+    print("{}".format(hex(result)))
+  def blend(self):
+    suma = 0
+    for x in self.x:
+      suma = suma + x
+    
+    suma = suma + self.c
+    resultado = suma /2
+    t1= self.T1()
+    t2 = self.T2()
+    tmp = int(resultado) ^ t1 ^ t2 
+    c = self.c
+
+    self.c = self.z_1
+    self.z_2=self.z_1
+    self.z_1= tmp
+  
+    return c
+
+  def T1 (self):
+    if self.c ==0:
+      return 0
+    elif self.c ==1:
+      return 1
+    elif self.c == 2:
+      return 2
+    elif self.c == 3:
+      return 3
+
+  def T2 (self):
+    if self.c ==0:
+      return 0
+    elif self.c ==1:
+      return 3
+    elif self.c == 2:
+      return 1
+    elif self.c == 3:
+      return 2
 
 ########### inicializacion de los vectores que se usaran para rellenar los LFSR ###############
 
@@ -628,6 +704,8 @@ hola.set_clk("02001A5F")
 hola.set_Ck("633A15E0534C0D78D03190BA4AF08721")
 hola.init_vectores()
 hola.init_LFSR()
+hola.clocking()
+
 
 # LFSR0 = 0x845d1e
 # LFSR1 = 0x4fe109b0
