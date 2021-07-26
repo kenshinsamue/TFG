@@ -237,13 +237,17 @@ class E0 (object):
       self.x[3] = resultado[2]
 
       c = self.blend()
+      print("C actual : {}".format(c))
       XResultantes=0
       for x in self.x:
+        print(x)
         XResultantes = XResultantes^x
+      print(XResultantes)
+      
       result = result << 1
       result = result  | (c^XResultantes)
-    print("{}   {}   {}   {}".format(hex(self.LFSR0),hex(self.LFSR1),hex(self.LFSR2),hex(self.LFSR3)))
-    print("{}".format(hex(result)))
+      print("{}   {}   {}   {}    | {} {} {} {}   {}".format(hex(self.LFSR0),hex(self.LFSR1),hex(self.LFSR2),hex(self.LFSR3),self.x[0],self.x[1],self.x[2],self.x[3],(c^XResultantes)))
+    # print("\n\n\n{}".format(hex(result)))
   def blend(self):
     suma = 0
     for x in self.x:
