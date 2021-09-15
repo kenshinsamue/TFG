@@ -9,9 +9,12 @@ class Capa{
     Capa();
     ~Capa();
     void InsertNeurona();
+    int GetNumeroNeuronas();
+    Neuron* GetNeurona(int);
+    void SetBias(Neuron*);
   private:
-    Neuron* neurona;
     std::vector<Neuron*> neuronas;
+    Neuron* Bias;
 };
 
 #endif

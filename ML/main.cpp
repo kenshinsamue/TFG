@@ -12,6 +12,6 @@ int main(void){
   int numero_neuronas =0;
   int capa =0;
   red_neuronal->InsertNeuronas(numero_neuronas,capa);
-  
-
+  red_neuronal->ConectarNeuronas();
+  red_neuronal->InsertarBias();
 }

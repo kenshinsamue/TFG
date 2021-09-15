@@ -7,3 +7,9 @@ void Capa::InsertNeurona(){
 
     neuronas.push_back(new Neuron);
 }
+int Capa::GetNumeroNeuronas(){
+    return neuronas.size();
+}
+Neuron* Capa::GetNeurona(int pos){
+    return neuronas[pos];
+}
