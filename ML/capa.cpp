@@ -13,3 +13,6 @@ int Capa::GetNumeroNeuronas(){
 Neuron* Capa::GetNeurona(int pos){
     return neuronas[pos];
 }
+std::vector<Neuron*> Capa::GetNeuronas(){
+    return neuronas;
+}

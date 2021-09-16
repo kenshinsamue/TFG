@@ -32,24 +32,33 @@ void RedNeuronal::InsertNeuronas(int n, int pos){
   }
 }
 void RedNeuronal::ConectarNeuronas(){
-  for(int i=1;i<capas.size();i++){
-    Enlace*  link = new Enlace();
-    for(int a=0 ; a<capas[i-1]->GetNumeroNeuronas();a++){
-      for(int b=0 ; b<capas[i]->GetNumeroNeuronas();b++){
-        link->SetPar(capas[i-1]->GetNeurona(a),capas[i-1]->GetNeurona(b)); 
+  std::vector<Neuron*> a;
+  std::vector<Neuron*> b;
+  for(int i=1; capas.size();i++){
+    a=capas[i-1]->GetNeuronas();
+    b=capas[i]->GetNeuronas();
+    for(auto primera : a){
+      for(auto segunda: b){
+        Enlace* link = new Enlace();
+        link->SetPar(primera,segunda);
+        primera->setEnlaceSiguiente(link);
+        segunda->setEnlaceAnterior(link);
       }
     }
-    enlaces.push_back(link);
   }
 }
 void RedNeuronal::InsertarBias(){
+  
   for (int i=0; i<capas.size()-1;i++){
-    Neuron* bias = new Neuron();
+
+    Neuron* bias = new Neuron(true);
     capas[i]->SetBias(bias);
-    for(int j=0;j<capas[i+1]->GetNumeroNeuronas();j++){
+    std::vector<Neuron*> siguientes = capas[i+1]->GetNeuronas();
+    for(auto a:siguientes){
       Enlace* link = new Enlace();
-      link->SetPar(bias, capas[i+1]->GetNeurona(j));
-      enlaces->push_back(link);
+      link->SetPar(bias,a);
+      bias->setEnlaceSiguiente(link);
+      a->setEnlaceAnterior(link);
     }
   }
   
