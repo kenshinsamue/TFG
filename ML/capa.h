@@ -13,6 +13,7 @@ class Capa{
     Neuron* GetNeurona(int);
     std::vector<Neuron*> GetNeuronas();
     void SetBias(Neuron*);
+    Neuron* GetBias(){return Bias;}
   private:
     std::vector<Neuron*> neuronas;
     Neuron* Bias;

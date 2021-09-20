@@ -1,18 +1,22 @@
 #ifndef ENLACE_
 #define ENLACE_
-
-#include "vector"
-#include "tuple"
+class Neuron;
 #include "neuron.h"
 
 class Enlace{
   public:
     Enlace();
     ~Enlace();
+    void setValor(double);
     void SetPar(Neuron*,Neuron*);
+    Neuron* GetA(){return A;}
+    Neuron* GetB(){return B;}
+    double GetWeigh(){return weigh;}
   private:
-    std::vector<std::tuple<Neuron*,Neuron*>> par;
+    Neuron* A;
+    Neuron* B;
     double weigh;
+    
 
 };
 #endif

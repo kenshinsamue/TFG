@@ -6,5 +6,6 @@ Enlace::Enlace(){
 Enlace::~Enlace(){}
 
 void Enlace::SetPar(Neuron* a, Neuron* b){
-    par.push_back(std::make_tuple(a,b));
+    A=a;
+    B=b;
 }

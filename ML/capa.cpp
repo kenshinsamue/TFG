@@ -1,8 +1,10 @@
 #include "capa.h"
-
+#include <iostream>
 Capa::Capa(){}
 Capa::~Capa(){}
-
+void Capa::SetBias(Neuron* bias){
+    Bias = bias;
+}
 void Capa::InsertNeurona(){
 
     neuronas.push_back(new Neuron);
