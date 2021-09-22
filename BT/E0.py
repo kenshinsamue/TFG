@@ -193,15 +193,37 @@ class E0 (object):
 
     # creamos la mascara para guardar el bit sobrante y acarrear
     
+   
     mascara = bit << self.size[indice]
-    sobrante = LFSR & mascara
-    sobrante = sobrante >> self.size[indice]
+    # sobrante = LFSR & mascara
+    # sobrante = sobrante >> self.size[indice]
     mascara = mascara -1
     
     # introducimos el proximo bit
     LFSR = LFSR & mascara
     LFSR = LFSR<< 1
     LFSR = LFSR | acarreado
+
+    if(indice == 0):
+      bit_x = 1
+      bit_x = bit_x<<23
+      sobrante = LFSR & bit_x
+      sobrante = sobrante>>23
+    elif (indice == 1):
+      bit_x = 1
+      bit_x = bit_x<<23
+      sobrante = LFSR & bit_x
+      sobrante = sobrante>>23
+    elif (indice == 2):
+      bit_x = 1
+      bit_x = bit_x<<31
+      sobrante = LFSR & bit_x
+      sobrante = sobrante>>31
+    elif (indice == 3):
+      bit_x = 1
+      bit_x = bit_x<<31
+      sobrante = LFSR & bit_x
+      sobrante = sobrante>>31
 
     return LFSR,vector,sobrante
       
