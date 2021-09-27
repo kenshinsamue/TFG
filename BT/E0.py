@@ -29,6 +29,7 @@ class E0 (object):
                      [0,3,11,35]]
     self.x = [0,0,0,0]
     self.clave=0
+    self.z = 0
               
 
 ############################ setter ##################################
@@ -259,53 +260,58 @@ class E0 (object):
       self.x[3] = resultado[2]
 
       c = self.blend()
-      print("C actual : {}".format(c))
-      XResultantes=0
+      print("El blend es : {}".format(c))
+      XResultantes = 0
       for x in self.x:
-        print(x)
+        # print(x)
         XResultantes = XResultantes^x
-      print(XResultantes)
+      # print(XResultantes)
       
       result = result << 1
       result = result  | (c^XResultantes)
-      print("{}   {}   {}   {}    | {} {} {} {}   {}".format(hex(self.LFSR0),hex(self.LFSR1),hex(self.LFSR2),hex(self.LFSR3),self.x[0],self.x[1],self.x[2],self.x[3],(c^XResultantes)))
+      salida = c ^ XResultantes
+      self.z = self.z << 1
+      self.z = self.z | salida 
+      print("{0:b}".format(self.z))
     # print("\n\n\n{}".format(hex(result)))
+    print ("resultado {}".format(hex(result)))
+  # a5 1f 39 be 88 14 83 d4 0d fc 8d e6 4b f4 65 f8 9d 67 21 c2 e0 1b 78 e7 c3
   def blend(self):
     suma = 0
     for x in self.x:
       suma = suma + x
-    
-    suma = suma + self.c
+    suma = suma + self.z_1
     resultado = suma /2
+    # print("{0:b}".format(tmp))
     t1= self.T1()
     t2 = self.T2()
-    tmp = int(resultado) ^ t1 ^ t2 
-    c = self.c
-
-    self.c = self.z_1
+    tmp = int(resultado) ^ t1 
+    tmp = tmp ^ t2 
+    bit = 1 
+    c = bit&self.z_1
     self.z_2=self.z_1
     self.z_1= tmp
   
     return c
 
   def T1 (self):
-    if self.c ==0:
+    if self.z_1 ==0:
       return 0
-    elif self.c ==1:
+    elif self.z_1 ==1:
       return 1
-    elif self.c == 2:
+    elif self.z_1 == 2:
       return 2
-    elif self.c == 3:
+    elif self.z_1 == 3:
       return 3
 
   def T2 (self):
-    if self.c ==0:
+    if self.z_2 ==0:
       return 0
-    elif self.c ==1:
+    elif self.z_2 ==1:
       return 3
-    elif self.c == 2:
+    elif self.z_2 == 2:
       return 1
-    elif self.c == 3:
+    elif self.z_2 == 3:
       return 2
 
 ########### inicializacion de los vectores que se usaran para rellenar los LFSR ###############
