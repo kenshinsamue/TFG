@@ -206,10 +206,45 @@ class E0 (object):
     return LFSR,vector,sobrante
       
 
+########### Ultima Iteracion ###############################
+
+  def IteracionFinal(self):
+    #LFSR 0
+    resultado = self.shift_LFSR_accarreado(self.LFSR0,self.vector_0,0)
+    self.LFSR0 = resultado[0]
+    self.vector_0 = resultado[1]        
+    self.x[0] = resultado[2]
+
+    #LFSR 1
+    resultado = self.shift_LFSR_accarreado(self.LFSR1,self.vector_1,1)
+    self.LFSR1 = resultado[0]
+    self.vector_1 = resultado[1]        
+    self.x[1] = resultado[2]
+
+    #LFSR 2
+    resultado = self.shift_LFSR_accarreado(self.LFSR2,self.vector_2,2)
+    self.LFSR2 = resultado[0]
+    self.vector_2 = resultado[1]        
+    self.x[2] = resultado[2]
+    
+
+    #LFSR3
+    resultado = self.shift_LFSR_accarreado(self.LFSR3,self.vector_3,3)
+    self.LFSR3 = resultado[0]
+    self.vector_3 = resultado[1]        
+    self.x[3] = resultado[2]
+
+    print ("resultado {}".format(hex(self.z)))
+    print ("LFSR1: {}".format(hex(self.LFSR0)))
+    print ("LFSR2: {}".format(hex(self.LFSR1)))
+    print ("LFSR3: {}".format(hex(self.LFSR2)))
+    print ("LFSR4: {}".format(hex(self.LFSR3)))
+
 ########### Acarreo de 200 iteraciones #####################
 
   def clocking(self):
     result =0
+    cuenta = 0
     for x in range(200):
       #LFSR 0
       resultado = self.shift_LFSR_accarreado(self.LFSR0,self.vector_0,0)
@@ -229,7 +264,6 @@ class E0 (object):
       self.vector_2 = resultado[1]        
       self.x[2] = resultado[2]
       
-
       #LFSR3
       resultado = self.shift_LFSR_accarreado(self.LFSR3,self.vector_3,3)
       self.LFSR3 = resultado[0]
@@ -237,17 +271,23 @@ class E0 (object):
       self.x[3] = resultado[2]
 
       c = self.blend()
-      print("C actual : {}".format(c))
-      XResultantes=0
-      for x in self.x:
-        print(x)
-        XResultantes = XResultantes^x
-      print(XResultantes)
+      XResultantes = 0
+      
+      for y in self.x:
+        XResultantes = XResultantes^y
       
       result = result << 1
       result = result  | (c^XResultantes)
-      print("{}   {}   {}   {}    | {} {} {} {}   {}".format(hex(self.LFSR0),hex(self.LFSR1),hex(self.LFSR2),hex(self.LFSR3),self.x[0],self.x[1],self.x[2],self.x[3],(c^XResultantes)))
-    # print("\n\n\n{}".format(hex(result)))
+      salida = c ^ XResultantes       
+      if x > 71:
+        cuenta = cuenta + 1
+        self.z = self.z << 1
+        self.z = self.z | salida 
+        # print("{0:b}".format(self.z))
+      
+    # self.z=0
+    self.IteracionFinal()
+
   def blend(self):
     suma = 0
     for x in self.x:
@@ -709,6 +749,7 @@ hola.set_Ck("633A15E0534C0D78D03190BA4AF08721")
 hola.init_vectores()
 hola.init_LFSR()
 hola.clocking()
+
 
 
 # LFSR0 = 0x845d1e
