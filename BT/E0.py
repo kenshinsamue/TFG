@@ -1,5 +1,7 @@
 # Creacion del algoritmo E0 para crear la clave cifrante del mensaje
 # Damos por hecho que los valores Hexadecimales son strings en mayuscula 
+
+
 class E0 (object):
 
   # BD_BDDR es la direccion en formato binario/decimal
@@ -30,6 +32,8 @@ class E0 (object):
     self.x = [0,0,0,0]
     self.clave=0
     self.z = 0
+    self.bloqueado = False
+    self.vector_z=[]
               
 
 ############################ setter ##################################
@@ -231,42 +235,182 @@ class E0 (object):
 
 ########### Ultima Iteracion ###############################
 
-  def IteracionFinal(self):
-    #LFSR 0
-    resultado = self.shift_LFSR_accarreado(self.LFSR0,self.vector_0,0)
-    self.LFSR0 = resultado[0]
-    self.vector_0 = resultado[1]        
-    self.x[0] = resultado[2]
+  def llenarLFSR(self):
+    
+    ############ LFSR1 ############
+    # z[12]_0
+    self.LFSR0 = 0
+    mascara = 1
+    self.LFSR0 = mascara & self.vector_z[25]
+    
+    # z[8]
+    tmp = self.vector_z[16]
+    tmp = tmp << 4
+    tmp = tmp | self.vector_z[17]
+    self.LFSR0 = self.LFSR0 << 8
+    self.LFSR0 = self.LFSR0 | tmp
 
-    #LFSR 1
-    resultado = self.shift_LFSR_accarreado(self.LFSR1,self.vector_1,1)
-    self.LFSR1 = resultado[0]
-    self.vector_1 = resultado[1]        
-    self.x[1] = resultado[2]
+    # z[4]
+    tmp = self.vector_z[8]
+    tmp = tmp << 4
+    tmp = tmp | self.vector_z[9]
+    self.LFSR0 = self.LFSR0 << 8
+    self.LFSR0 = self.LFSR0 | tmp
+    # z[0]
+    tmp = self.vector_z[0]
+    tmp = tmp << 4
+    tmp = tmp | self.vector_z[1]
+    self.LFSR0 = self.LFSR0 << 8
+    self.LFSR0 = self.LFSR0 | tmp
+    mascara = 33554432-1
+    self.LFSR0 = self.LFSR0 & mascara
+    print("LFSR1 :{}".format(hex(self.LFSR0)))
 
-    #LFSR 2
-    resultado = self.shift_LFSR_accarreado(self.LFSR2,self.vector_2,2)
-    self.LFSR2 = resultado[0]
-    self.vector_2 = resultado[1]        
-    self.x[2] = resultado[2]
+    ########### LFSR2 ###########
+    self.LFSR1 = 0
+    mascara = 14
+    # z[12](7-1)
+    self.LFSR1 = self.vector_z[24]
+    self.LFSR1 = self.LFSR1 << 4
+    tmp = self.vector_z[25] & mascara
+    self.LFSR1 = self.LFSR1 | tmp
+    self.LFSR1 = self.LFSR1 >> 1
+
+    # z[9]
+    tmp = self.vector_z[18]
+    tmp = tmp << 4
+    tmp = tmp | self.vector_z[19]
+    self.LFSR1 = self.LFSR1 << 8
+    self.LFSR1 = self.LFSR1 | tmp
+    # z[5]
+    tmp = self.vector_z[10]
+    tmp = tmp << 4
+    tmp = tmp | self.vector_z[11]
+    self.LFSR1 = self.LFSR1 << 8
+    self.LFSR1 = self.LFSR1 | tmp
+
+    tmp = self.vector_z[2]
+    tmp = tmp << 4
+    tmp = tmp | self.vector_z[3]
+    self.LFSR1 = self.LFSR1 << 8
+    self.LFSR1 = self.LFSR1 | tmp
+    
+    print("LFSR2 :{}".format(hex(self.LFSR1)))
+
+    ############### LFSR3 ###############
+    self.LFSR2 = 0
+    # z[15]_0
+    self.LFSR2 = self.vector_z[31] & 1
+
+    # z[13]
+    tmp = self.vector_z[26]
+    tmp = tmp << 4
+    tmp = tmp | self.vector_z[27]
+    self.LFSR2 = self.LFSR2 << 8
+    self.LFSR2 = self.LFSR2 | tmp
+
+    # z[10]
+    tmp = self.vector_z[20]
+    tmp = tmp << 4
+    tmp = tmp | self.vector_z[21]
+    self.LFSR2 = self.LFSR2 << 8
+    self.LFSR2 = self.LFSR2 | tmp
+
+    # z[6]
+    tmp = self.vector_z[12]
+    tmp = tmp << 4
+    tmp = tmp | self.vector_z[13]
+    self.LFSR2 = self.LFSR2 << 8
+    self.LFSR2 = self.LFSR2 | tmp
+
+    #z[2] 
+    tmp = self.vector_z[4]
+    tmp = tmp << 4
+    tmp = tmp | self.vector_z[5]
+    self.LFSR2 = self.LFSR2 << 8
+    self.LFSR2 = self.LFSR2 | tmp
+   
+    print("LFSR3 :{}".format(hex(self.LFSR2)))
+    
+    ############ LFSR4 ############
+    self.LFSR3 = 0
+    mascara = 14
+    # z[15](7-1)
+    self.LFSR3 = self.vector_z[30]
+    self.LFSR3 = self.LFSR3 << 4
+    tmp = self.vector_z[31] & mascara
+    self.LFSR3 = self.LFSR3 | tmp
+    self.LFSR3 = self.LFSR3 >> 1
+
+    # z[14]
+    tmp = self.vector_z[28]
+    tmp = tmp << 4
+    tmp = tmp | self.vector_z[29]
+    self.LFSR3 = self.LFSR3 << 8
+    self.LFSR3 = self.LFSR3 | tmp
+    
+    # z[11]
+    tmp = self.vector_z[22]
+    tmp = tmp << 4
+    tmp = tmp | self.vector_z[23]
+    self.LFSR3 = self.LFSR3 << 8
+    self.LFSR3 = self.LFSR3 | tmp
+    
+    # z[7]
+    tmp = self.vector_z[14]
+    tmp = tmp << 4
+    tmp = tmp | self.vector_z[15]
+    self.LFSR3 = self.LFSR3 << 8
+    self.LFSR3 = self.LFSR3 | tmp
+
+    # z[3]
+    tmp = self.vector_z[6]
+    tmp = tmp << 4
+    tmp = tmp | self.vector_z[7]
+    self.LFSR3 = self.LFSR3 << 8
+    self.LFSR3 = self.LFSR3 | tmp
+   
+    print("LFSR4 :{}".format(hex(self.LFSR3)))
+
+    pass
     
 
-    #LFSR3
-    resultado = self.shift_LFSR_accarreado(self.LFSR3,self.vector_3,3)
-    self.LFSR3 = resultado[0]
-    self.vector_3 = resultado[1]        
-    self.x[3] = resultado[2]
-
-    print ("resultado {}".format(hex(self.z)))
-    print ("LFSR1: {}".format(hex(self.LFSR0)))
-    print ("LFSR2: {}".format(hex(self.LFSR1)))
-    print ("LFSR3: {}".format(hex(self.LFSR2)))
-    print ("LFSR4: {}".format(hex(self.LFSR3)))
-
 ########### Acarreo de 200 iteraciones #####################
+  def CorregirBits(self):
+    vector_z = self.z
+    Bytes_resultantes = []
+    hexa_1 = 240 
+    hexa_2 = 15 
+    mascara = 255
+
+    for x in range(16) :
+      mascara_aux = mascara << 120-(x*8)
+      resultado = vector_z & mascara_aux
+      resultado = resultado >> 120-(x*8)
+      primero = resultado & hexa_2
+      segundo = resultado & hexa_1
+      segundo = segundo >> 4
+      Bytes_resultantes.append(primero)
+      Bytes_resultantes.append(segundo)
+    for x in range(32):
+
+      prueba = Bytes_resultantes[x]
+      final = 0
+      mascara = 1
+      for y in range(4):
+        tmp = prueba & mascara
+        prueba = prueba >> 1
+        final = final | tmp
+        if y != 3:
+          final = final << 1
+        
+      Bytes_resultantes[x]= final
+    self.vector_z = Bytes_resultantes
+    # for x in self.vector_z:
+      # print("{}".format(hex(x)))
+      
 
   def clocking(self):
-    result =0
     cuenta = 0
     for x in range(200):
       #LFSR 0
@@ -294,31 +438,11 @@ class E0 (object):
       self.x[3] = resultado[2]
 
       c = self.blend()
-<<<<<<< HEAD
-      print("El blend es : {}".format(c))
-      XResultantes = 0
-      for x in self.x:
-        # print(x)
-        XResultantes = XResultantes^x
-      # print(XResultantes)
-      
-      result = result << 1
-      result = result  | (c^XResultantes)
-      salida = c ^ XResultantes
-      self.z = self.z << 1
-      self.z = self.z | salida 
-      print("{0:b}".format(self.z))
-    # print("\n\n\n{}".format(hex(result)))
-    print ("resultado {}".format(hex(result)))
-  # a5 1f 39 be 88 14 83 d4 0d fc 8d e6 4b f4 65 f8 9d 67 21 c2 e0 1b 78 e7 c3
-=======
       XResultantes = 0
       
       for y in self.x:
         XResultantes = XResultantes^y
       
-      result = result << 1
-      result = result  | (c^XResultantes)
       salida = c ^ XResultantes       
       if x > 71:
         cuenta = cuenta + 1
@@ -327,9 +451,17 @@ class E0 (object):
         # print("{0:b}".format(self.z))
       
     # self.z=0
-    self.IteracionFinal()
+    print ("{}".format(hex(self.z)))
+    print ("{0:b}".format(self.z))
+    # print ("vector 1: {}".format(hex(self.LFSR0)))
+    # print ("vector 2: {}".format(hex(self.LFSR1)))
+    # print ("vector 3: {}".format(hex(self.LFSR2)))
+    # print ("vector 4: {}".format(hex(self.LFSR3)))
+    # self.bloqueado = True
+    # self.IteracionFinal()
+    self.CorregirBits()
+    self.llenarLFSR()
 
->>>>>>> ML
   def blend(self):
     suma = 0
     for x in self.x:
@@ -343,8 +475,9 @@ class E0 (object):
     tmp = tmp ^ t2 
     bit = 1 
     c = bit&self.z_1
-    self.z_2=self.z_1
-    self.z_1= tmp
+    if self.bloqueado is False:
+      self.z_2=self.z_1
+      self.z_1= tmp
   
     return c
 
