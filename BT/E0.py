@@ -32,8 +32,8 @@ class E0 (object):
     self.x = [0,0,0,0]
     self.clave=0
     self.z = 0
-    self.bloqueado = False
     self.vector_z=[]
+    self.bloqueo = False
               
 
 ############################ setter ##################################
@@ -232,7 +232,49 @@ class E0 (object):
 
     return LFSR,vector,sobrante
       
+  def shift_LFSR_accarreado_final(self,LFSR,vector,indice):
+    bit = 1
+    acarreado = vector & bit
+    vector = vector >> 1
+    for x in self.feedback[indice]: # obtenemos el valor acarreado
+        
+      tmp_bit = 1
+      tmp_bit = tmp_bit << (self.size[indice]-x)
+      resultado = tmp_bit & LFSR   # usamos AND porque queremos obtener el primer valor descrito 
+                                    # por el polinomio
+      resultado = resultado >> (self.size[indice]-x)    
+      acarreado = acarreado ^ resultado                           
+   
 
+    if(indice == 0):
+      bit_x = 1
+      bit_x = bit_x<<23
+      sobrante = LFSR & bit_x
+      sobrante = sobrante>>23
+    elif (indice == 1):
+      bit_x = 1
+      bit_x = bit_x<<23
+      sobrante = LFSR & bit_x
+      sobrante = sobrante>>23
+    elif (indice == 2):
+      bit_x = 1
+      bit_x = bit_x<<31
+      sobrante = LFSR & bit_x
+      sobrante = sobrante>>31
+    elif (indice == 3):
+      bit_x = 1
+      bit_x = bit_x<<31
+      sobrante = LFSR & bit_x
+      sobrante = sobrante>>31
+    
+    mascara = bit << self.size[indice]
+    mascara = mascara -1
+    
+    # introducimos el proximo bit
+    LFSR = LFSR & mascara
+    LFSR = LFSR<< 1
+    LFSR = LFSR | acarreado
+    return LFSR,vector,sobrante
 ########### Ultima Iteracion ###############################
 
   def llenarLFSR(self):
@@ -264,7 +306,7 @@ class E0 (object):
     self.LFSR0 = self.LFSR0 | tmp
     mascara = 33554432-1
     self.LFSR0 = self.LFSR0 & mascara
-    print("LFSR1 :{}".format(hex(self.LFSR0)))
+    # print("LFSR1 :{}".format(hex(self.LFSR0)))
 
     ########### LFSR2 ###########
     self.LFSR1 = 0
@@ -295,7 +337,7 @@ class E0 (object):
     self.LFSR1 = self.LFSR1 << 8
     self.LFSR1 = self.LFSR1 | tmp
     
-    print("LFSR2 :{}".format(hex(self.LFSR1)))
+    # print("LFSR2 :{}".format(hex(self.LFSR1)))
 
     ############### LFSR3 ###############
     self.LFSR2 = 0
@@ -330,7 +372,7 @@ class E0 (object):
     self.LFSR2 = self.LFSR2 << 8
     self.LFSR2 = self.LFSR2 | tmp
    
-    print("LFSR3 :{}".format(hex(self.LFSR2)))
+    # print("LFSR3 :{}".format(hex(self.LFSR2)))
     
     ############ LFSR4 ############
     self.LFSR3 = 0
@@ -370,11 +412,58 @@ class E0 (object):
     self.LFSR3 = self.LFSR3 << 8
     self.LFSR3 = self.LFSR3 | tmp
    
-    print("LFSR4 :{}".format(hex(self.LFSR3)))
+    # print("LFSR4 :{}".format(hex(self.LFSR3)))    
 
-    pass
+  def IteracionFinal(self):
+    self.bloqueo = False
+    self.z = 0
+    cuenta = 0
+    for x in range(125):
+      print("LFSR0 {}".format(hex(self.LFSR0)))
+      print("LFSR1 {}".format(hex(self.LFSR1)))
+      print("LFSR2 {}".format(hex(self.LFSR2)))
+      print("LFSR3 {}".format(hex(self.LFSR3)))
+      #LFSR 0
+      resultado = self.shift_LFSR_accarreado_final(self.LFSR0,self.vector_0,0)
+      self.LFSR0 = resultado[0]
+      self.vector_0 = resultado[1]        
+      self.x[0] = resultado[2]
+
+      #LFSR 1
+      resultado = self.shift_LFSR_accarreado_final(self.LFSR1,self.vector_1,1)
+      self.LFSR1 = resultado[0]
+      self.vector_1 = resultado[1]        
+      self.x[1] = resultado[2]
+
+      #LFSR 2
+      resultado = self.shift_LFSR_accarreado_final(self.LFSR2,self.vector_2,2)
+      self.LFSR2 = resultado[0]
+      self.vector_2 = resultado[1]        
+      self.x[2] = resultado[2]
+      
+      #LFSR3
+      resultado = self.shift_LFSR_accarreado_final(self.LFSR3,self.vector_3,3)
+      self.LFSR3 = resultado[0]
+      self.vector_3 = resultado[1]        
+      self.x[3] = resultado[2]
+
+      
+      c = self.blend()
+      XResultantes = 0
+      
+      for y in self.x:
+        XResultantes = XResultantes^y
+      
+      salida = c ^ XResultantes       
+      print("Salida: {0:b}".format(salida))
+      
+      print("X: {} {} {} {}".format(self.x[0],self.x[1],self.x[2],self.x[3]))
+      cuenta = cuenta + 1
+      self.z = self.z << 1
+      self.z = self.z | salida 
+      print("{0:b}".format(self.z))
+      
     
-
 ########### Acarreo de 200 iteraciones #####################
   def CorregirBits(self):
     vector_z = self.z
@@ -413,6 +502,7 @@ class E0 (object):
   def clocking(self):
     cuenta = 0
     for x in range(200):
+      
       #LFSR 0
       resultado = self.shift_LFSR_accarreado(self.LFSR0,self.vector_0,0)
       self.LFSR0 = resultado[0]
@@ -436,7 +526,8 @@ class E0 (object):
       self.LFSR3 = resultado[0]
       self.vector_3 = resultado[1]        
       self.x[3] = resultado[2]
-
+      if x== 199:
+        self.bloqueo = True
       c = self.blend()
       XResultantes = 0
       
@@ -451,19 +542,16 @@ class E0 (object):
         # print("{0:b}".format(self.z))
       
     # self.z=0
-    print ("{}".format(hex(self.z)))
-    print ("{0:b}".format(self.z))
-    # print ("vector 1: {}".format(hex(self.LFSR0)))
-    # print ("vector 2: {}".format(hex(self.LFSR1)))
-    # print ("vector 3: {}".format(hex(self.LFSR2)))
-    # print ("vector 4: {}".format(hex(self.LFSR3)))
-    # self.bloqueado = True
-    # self.IteracionFinal()
+    # print ("{}".format(hex(self.z)))
+    # print ("{0:b}".format(self.z))
+  
     self.CorregirBits()
     self.llenarLFSR()
+    self.IteracionFinal()
 
   def blend(self):
     suma = 0
+    # print("{} -- {}".format(self.z_1, self.z_2))
     for x in self.x:
       suma = suma + x
     suma = suma + self.z_1
@@ -475,7 +563,7 @@ class E0 (object):
     tmp = tmp ^ t2 
     bit = 1 
     c = bit&self.z_1
-    if self.bloqueado is False:
+    if self.bloqueo == False:
       self.z_2=self.z_1
       self.z_1= tmp
   
