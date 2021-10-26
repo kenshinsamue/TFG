@@ -6,6 +6,44 @@ RedNeuronal::RedNeuronal(){}
 
 RedNeuronal::~RedNeuronal(){}
 
+void RedNeuronal::BackProp(const std::vector<double> &input){
+
+  Capa* outputLayer = capas.back();
+  m_error = 0.0;
+  int size = outputLayer->GetNumeroNeuronas();
+  for (unsigned n = 0 ; n < size - 1 ;++n){
+    double delta = input[n] - outputLayer->GetNeurona(n)->getValor();
+    m_error += delta * delta;
+  }
+
+  m_error /= size -1;
+  m_error = sqrt(m_error);
+
+  m_recentAverageError = (m_recentAverageError * m_recentAverageSmoothingFactor+m_error)/(m_recentAverageSmoothingFactor + 1.0);
+
+  for(unsigned n =0 ;n < size-1;++n){
+    outputLayer->GetNeurona(n)->calcularOutputGrandients(input[n]);
+  }
+  for(unsigned n = capas.size()-2 ;n > 0; --n){
+    Capa* capaOculta = capas[n];
+    Capa* siguienteCapa = capas[n+1];
+    for(unsigned m = 0 ; m<capaOculta->GetNeuronas().size();++m){
+      capaOculta->GetNeurona(m)->calcularGradiantesOcultos(siguienteCapa);
+    }
+  }
+
+  for (unsigned n = capas.size()-1 ; n> 0; --n){
+    Capa* capa_actual = capas[n];
+    Capa* capa_anterior = capas[n-1];
+
+    for (unsigned m =0; m<capas.size()-1;++m ){
+      capa_actual->GetNeurona(n)->actualizarInputs(capa_anterior);
+    }
+  }
+
+}
+
+
 void RedNeuronal::Forward(std::vector <double> inputs){
   assert(inputs.size() == capas[0]->GetNeuronas().size());
   // Inicializamos los valores de las neuronas de la primera capa

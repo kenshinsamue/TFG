@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 
-
+//  IR A NEURON Cpp PARA CONTINUAR CON EL FORDWARD
 int main(int argc, char *argv[]){
 
 

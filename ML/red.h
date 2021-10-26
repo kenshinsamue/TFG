@@ -7,6 +7,7 @@
 #include <cassert>
 class RedNeuronal{
   public:
+  // constructor 
     RedNeuronal();
     ~RedNeuronal();
     void Forward(std::vector<double>);
@@ -16,10 +17,14 @@ class RedNeuronal{
     Capa* ObtenerCapa(int pos);
     void ConectarNeuronas ();
     void InsertarBias();
+    void BackProp(const std::vector<double> &);
     void Imprimir();
   private:
     std::vector<Capa*> capas;
     std::vector<Enlace*> enlaces;
+    double m_error;
+    double m_recentAverageError;
+    static double m_recentAverageSmoothingFactor;
 
 };
 

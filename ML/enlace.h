@@ -12,10 +12,13 @@ class Enlace{
     Neuron* GetA(){return A;}
     Neuron* GetB(){return B;}
     double GetWeigh(){return weigh;}
+    double GetDelta(){return deltaweigh;}
+    void setdelta(double valor){deltaweigh =valor;}
   private:
     Neuron* A;
     Neuron* B;
     double weigh;
+    doule deltaweigh;
     
 
 };
