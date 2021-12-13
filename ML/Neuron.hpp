@@ -1,7 +1,7 @@
 #include <vector>
 #include <cstdlib>
 #include <cmath>
-
+#include <iostream>
 #ifndef Neuronas
 #define Neuronas
 
@@ -24,7 +24,7 @@ class Neuron{
     void calcHiddenGradients(Layer &sigCapa);
     void setOutputVal(double val){ m_outputVal = val;}
     double getOutputVal(){return m_outputVal;}
-    void updateInputWeights (Layer prevCapa);
+    void updateInputWeights (Layer &prevCapa);
   private:
     double sumaDOW(Layer &sigCapa);
     static double eta;

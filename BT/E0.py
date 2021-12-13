@@ -58,12 +58,11 @@ class E0 (object):
       self.BD_BDDR = self.BD_BDDR << 4
       bit = self.hex_to_bit(hexa)
       self.BD_BDDR =self.BD_BDDR | bit 
-
-    # print("{0:b}".format(self.BD_BDDR))
-    # print(self.mac)
-    # print(self.LAP)
-    # print(self.UAP)
-    # print(self.NAP)
+    print ("Inicializando mac")
+    print ("Binario: {0:b}".format(self.BD_BDDR))
+    print ("Hexadecimal: {}".format(self.mac))
+    print ("  LAP  UAP NAP\n{} {} {}".format(self.LAP,self.UAP,self.NAP))
+    
   
 
 ########### Inicializacion de los LFSR #####################
@@ -74,7 +73,11 @@ class E0 (object):
     self.vector_2 = self.init_vector_LFSR2()
     self.vector_3 = self.init_vector_LFSR3() 
 
+    print ("\n\n Inicializacion de Vectores: \n     LFSR1            LFSR2              LFSR3           LFSR4 \n{}  {}  {}  {}".format(hex(self.vector_0),hex(self.vector_1),hex(self.vector_2),hex(self.vector_3)))
+    print ("\n\n")
+
   def init_LFSR (self):
+    print("\n\n##############Iteraciones iniciales#####################")
     for x in range(39):
       if x < 25 :
         #LFSR0
@@ -103,7 +106,6 @@ class E0 (object):
         self.LFSR0 = resultado[0]
         self.vector_0 = resultado[1]        
         self.x[0] = resultado[2]
-        # print("el vector es: {}".format(hex(self.LFSR0)))
 
         #LFSR1
         resultado = self.shift_LFSR(self.LFSR1,self.vector_1)
@@ -127,14 +129,12 @@ class E0 (object):
         self.LFSR0 = resultado[0]
         self.vector_0 = resultado[1]        
         self.x[0] = resultado[2]
-        #print("el vector es: {}".format(hex(self.LFSR0)))
 
         #LFSR 1
         resultado = self.shift_LFSR_accarreado(self.LFSR1,self.vector_1,1)
         self.LFSR1 = resultado[0]
         self.vector_1 = resultado[1]        
         self.x[1] = resultado[2]
-        #print("el vector es: {}".format(hex(self.LFSR1)))
 
         #LFSR2
         resultado = self.shift_LFSR(self.LFSR2,self.vector_2)
@@ -152,27 +152,31 @@ class E0 (object):
         self.LFSR0 = resultado[0]
         self.vector_0 = resultado[1]        
         self.x[0] = resultado[2]
-        #print("el vector es: {}".format(hex(self.LFSR0)))
 
         #LFSR 1
         resultado = self.shift_LFSR_accarreado(self.LFSR1,self.vector_1,1)
         self.LFSR1 = resultado[0]
         self.vector_1 = resultado[1]        
         self.x[1] = resultado[2]
-        #print("el vector es: {}".format(hex(self.LFSR1)))
 
         #LFSR 0
         resultado = self.shift_LFSR_accarreado(self.LFSR2,self.vector_2,2)
         self.LFSR2 = resultado[0]
         self.vector_2 = resultado[1]        
         self.x[2] = resultado[2]
-        #print("el vector es: {}".format(hex(self.LFSR2)))
         
 
         #LFSR3
         resultado = self.shift_LFSR(self.LFSR3,self.vector_3)
         self.LFSR3 = resultado[0]
         self.vector_3 = resultado[1]
+      print("\n t: {}".format(x+1))
+      print("LFSR0 {}".format(hex(self.LFSR0)))
+      print("LFSR1 {}".format(hex(self.LFSR1)))
+      print("LFSR2 {}".format(hex(self.LFSR2)))
+      print("LFSR3 {}".format(hex(self.LFSR3)))
+      print("X: {} {} {} {}".format(self.x[0],self.x[1],self.x[2],self.x[3]))
+
 
   def shift_LFSR(self,LFSR,vector):
     
@@ -418,7 +422,9 @@ class E0 (object):
     self.bloqueo = False
     self.z = 0
     cuenta = 0
+    print("\n\n Ultima iteracion de combinacion de bits")
     for x in range(125):
+      print("\n t: {}".format(x+1))
       print("LFSR0 {}".format(hex(self.LFSR0)))
       print("LFSR1 {}".format(hex(self.LFSR1)))
       print("LFSR2 {}".format(hex(self.LFSR2)))
@@ -460,12 +466,15 @@ class E0 (object):
       print("X: {} {} {} {}".format(self.x[0],self.x[1],self.x[2],self.x[3]))
       cuenta = cuenta + 1
       self.z = self.z << 1
-      self.z = self.z | salida 
+      self.z = self.z | salida
+      print("Z:") 
       print("{0:b}".format(self.z))
       
     
 ########### Acarreo de 200 iteraciones #####################
   def CorregirBits(self):
+    print("\n\n ########## Carga paralela de los bits ##########")
+    
     vector_z = self.z
     Bytes_resultantes = []
     hexa_1 = 240 
@@ -481,6 +490,7 @@ class E0 (object):
       segundo = segundo >> 4
       Bytes_resultantes.append(primero)
       Bytes_resultantes.append(segundo)
+    
     for x in range(32):
 
       prueba = Bytes_resultantes[x]
@@ -495,12 +505,14 @@ class E0 (object):
         
       Bytes_resultantes[x]= final
     self.vector_z = Bytes_resultantes
-    # for x in self.vector_z:
-      # print("{}".format(hex(x)))
+    print ("Z : ")
+    for x in self.vector_z:
+      print("{}".format(hex(x)))
       
 
   def clocking(self):
     cuenta = 0
+    print("\n\n ############# Clocking ############")
     for x in range(200):
       
       #LFSR 0
@@ -540,7 +552,13 @@ class E0 (object):
         self.z = self.z << 1
         self.z = self.z | salida 
         # print("{0:b}".format(self.z))
-      
+      print("\n t: {}".format(x+1))
+      print("LFSR0 {}".format(hex(self.LFSR0)))
+      print("LFSR1 {}".format(hex(self.LFSR1)))
+      print("LFSR2 {}".format(hex(self.LFSR2)))
+      print("LFSR3 {}".format(hex(self.LFSR3)))
+      print("X: {} {} {} {}".format(self.x[0],self.x[1],self.x[2],self.x[3]))
+      print("Z: {}".format(salida))
     # self.z=0
     # print ("{}".format(hex(self.z)))
     # print ("{0:b}".format(self.z))
@@ -1002,10 +1020,7 @@ class E0 (object):
 
 hola = E0()
 hola.set_mac("1B:0F:56:94:7F:2C")
-# tmp = hola.get_byte_value(131241234,2)
-# tmp = hola.get_bit_value(131241234,4)
-# print("{0:b}".format(tmp))
-# hola.hex_to_bit("F")
+
 
 hola.set_clk("02001A5F")
 hola.set_Ck("633A15E0534C0D78D03190BA4AF08721")
@@ -1014,8 +1029,3 @@ hola.init_LFSR()
 hola.clocking()
 
 
-
-# LFSR0 = 0x845d1e
-# LFSR1 = 0x4fe109b0
-# LFSR2 = 0x10f8c325c
-# LFSR3 = 0x7a520bcac6

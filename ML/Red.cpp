@@ -25,6 +25,11 @@ Red::Red(const vector<unsigned> &topologia){
   }
 }
 
+/**
+ * feedForward se encarga de recibir un vector con un conjunto de valores de entrada
+ * estos valores son insertados dentro del valor de salida de cada neurona, posteriormente 
+ * hace calcular los valores iniciales para el resto de neuronas de las capas siguientes
+ * */
 void Red::feedForward(vector<double> &inputVals){
   assert(inputVals.size() == m_layer[0].size()-1);
   for(unsigned i = 0;i< inputVals.size();i++){
@@ -38,43 +43,54 @@ void Red::feedForward(vector<double> &inputVals){
   }
 }
 
+/**
+ * backProp se encarga del aprendizaje de la red, verifica los valores del vector que 
+ * se pasa por parametro (valores objetivos), y se hace el ajuste automatico del total de 
+ * neuronas para acercar los valores de salida con los objetivos
+*/
 void Red::backProp(vector<double> &targetVals){
   // calcular el error total 
-  Layer &outputCapa = m_layer.back();
+  Layer &outputCapa = m_layer.back();                               // ultima capa
   m_error = 0.0;
   for (unsigned i = 0 ; i<outputCapa.size() -1 ; i++){
-    double delta = targetVals[i] - outputCapa[i].getOutputVal();
-    m_error += delta * delta;
+    double delta = targetVals[i] - outputCapa[i].getOutputVal();    // diferencia entre el valor objetivo y el resultado
+    m_error += delta * delta;                                       // se eleva al cuadrado y se suma 
   }
-  m_error /=outputCapa.size()-1;
-  m_error = sqrt(m_error);
+  m_error /=outputCapa.size()-1;                                    // lo dividimos entre el total de valores 
+  m_error = sqrt(m_error);                                          // calculamos la raiz cuadrada (RMS)
 
-
-  m_recentAverageError = (m_recentAverageError * m_recentAverageSmoothingFactor + m_error)
-                        / (m_recentAverageError + 1.0);
+                                                                    // Calculamos el margen de error medio respecto los resultados recientes
+  m_recentAverageError = 
+      (m_recentAverageError * m_recentAverageSmoothingFactor + m_error)
+      / (m_recentAverageSmoothingFactor + 1.0);
   // calcular grandientes de las capas salientes
 
-  for (unsigned i =0;i<outputCapa.size()-1;i++){
+  for (unsigned i = 0; i < outputCapa.size()-1; i++){               // Calculamos los gradiantes de los valores de salida
     outputCapa[i].calcOutputGradients(targetVals[i]);
   }
+
   // calcular los gradientes de las capas ocultas (intermedias)
   for (unsigned indexCapa = m_layer.size()-2; indexCapa>0;indexCapa--){
     Layer &capaOculta = m_layer[indexCapa];
     Layer &sigCapa = m_layer[indexCapa+1];
-    for(unsigned i =0; i<capaOculta.size();i++){
+    for(unsigned i = 0; i < capaOculta.size(); i++){
       capaOculta[i].calcHiddenGradients(sigCapa);
     }
   }
   // actualizar los pesos de las conexiones desde las ultimas hasta las primeras capas
 
-  for(unsigned indexCapa = m_layer.size() -1 ;indexCapa>0;indexCapa--){   // indice a la ultima capa
+  for(unsigned indexCapa = m_layer.size() - 1; indexCapa > 0; indexCapa--){   // indice a la ultima capa
     Layer &capa = m_layer[indexCapa];   // ultima capa 
     Layer &prevCapa = m_layer[indexCapa-1];   // capa anterior
-    for(unsigned i=0; i < capa.size() -1 ;i++)  // para cada una de las neuronas de la capa anterior 
+    for(unsigned i = 0; i < capa.size() -1; i++)  // para cada una de las neuronas de la capa anterior 
       capa[i].updateInputWeights(prevCapa);     // actualizamos los datos
   }
 }
 
+/**
+ * getResults recive un vector en el cual se van a introducir los valores de salida 
+ * de las neuronas dentro de la ultima capa de la red, menos la BIAS
+*/
 void Red::getResults(vector<double> &resultVals){
   resultVals.clear();
   for(unsigned i  =0 ; i<m_layer.back().size() -1 ;i++){
