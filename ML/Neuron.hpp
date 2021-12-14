@@ -25,6 +25,7 @@ class Neuron{
     void setOutputVal(double val){ m_outputVal = val;}
     double getOutputVal(){return m_outputVal;}
     void updateInputWeights (Layer &prevCapa);
+    vector<Conexion> getConections(){return m_outputWeights;}
   private:
     double sumaDOW(Layer &sigCapa);
     static double eta;

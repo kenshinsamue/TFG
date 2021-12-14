@@ -61,7 +61,7 @@ void Entrenar (Red &neuronal,string RSC_IN){
     targetVals.clear();
     resultVals.clear();
   }
-  
+  neuronal.SafeConfig();
   inputs.close();
 }
 void Computar(Red &neuronal,string RSC_IN){
@@ -82,6 +82,8 @@ void Computar(Red &neuronal,string RSC_IN){
     for(int i=0;i<resultVals.size();i++){
       cout <<"\033[1;36m"<<resultVals[i]<<"\033[0m ";
     }
+    cout<<endl;
+    inputVals.clear();
   }
   inputs.close();
   
@@ -116,6 +118,7 @@ string layout = "format.txt";
 bool entrenar = false;
 string input = "Inputs.txt";
 string config = "";
+
 vector<unsigned> leerLayout(){
 // Abrimos el formato de la red y la aplicamos a la red
   fstream file;
@@ -131,8 +134,9 @@ vector<unsigned> leerLayout(){
       topologia.push_back(stoi(cadena));
     }
   }
+  return topologia;
 }
-void leerArgumentos(int size,char* arg[],Red* mi_red){
+void leerArgumentos(int size,char* arg[],Red &mi_red){
   vector<string> argumentos;
   if(size==1){
     help();
@@ -168,20 +172,21 @@ void leerArgumentos(int size,char* arg[],Red* mi_red){
       input = argumentos[index+1];
     }
     vector<unsigned> formato = leerLayout();
-    mi_red = new Red(formato);
+    mi_red = Red(formato);
     if(config!="")
-      mi_red->SetWeight(config);
+      mi_red.SetWeight(config);
   }
 }
 
 int main(int argc, char* argv[]) {
-  Red* mi_red= new Red();
+  Red mi_red= Red();
   leerArgumentos(argc,argv,mi_red);
+  
   if(entrenar==true){
-    Entrenar(*mi_red,input);
+    Entrenar(mi_red,input);
   }
   else{
-    Computar(*mi_red,input);
+    Computar(mi_red,input);
   }
-  
+  return 0;
 }
