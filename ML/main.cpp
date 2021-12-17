@@ -169,19 +169,26 @@ void leerArgumentos(int size,char* arg[],Red &mi_red){
     if(std::find(argumentos.begin(), argumentos.end(), CONFIG) != argumentos.end()){
       auto it = std::find(argumentos.begin(), argumentos.end(), CONFIG);
       int index = it - argumentos.begin();
-      input = argumentos[index+1];
+      config = argumentos[index+1];
     }
     vector<unsigned> formato = leerLayout();
     mi_red = Red(formato);
-    if(config!="")
-      mi_red.SetWeight(config);
+    
+    if(config!=""){                             // verificamos que el nombre del fichero existe
+      ifstream file (config);
+      if(file.peek()!=ifstream::traits_type::eof()){  // en caso de que el fichero NO este vacio
+        mi_red.SetWeight(config);                     // lo cargamos
+        cout<<"Se termino de cargar"<<endl;
+      }
+    }
+      
   }
 }
 
 int main(int argc, char* argv[]) {
   Red mi_red= Red();
   leerArgumentos(argc,argv,mi_red);
-  
+  // mi_red.SetWeight("config.txt");
   if(entrenar==true){
     Entrenar(mi_red,input);
   }
