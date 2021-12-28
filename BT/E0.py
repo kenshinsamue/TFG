@@ -1016,16 +1016,164 @@ class E0 (object):
 
 ############################################################################################################################
 
+def GetHEx (valor):
+  if valor == 0:
+    return "0"
+  elif valor == 1:
+    return "1"
+  elif valor == 2:
+    return "2"
+  elif valor == 3:
+    return "3"
+  elif valor == 4:
+    return "4"
+  elif valor == 5:
+    return "5"
+  elif valor == 6:
+    return "6"
+  elif valor == 7:
+    return "7"
+  elif valor == 8:
+    return "8"
+  elif valor == 9:
+    return "9"
+  elif valor == 10:
+    return "A"
+  elif valor == 11:
+    return "B"
+  elif valor == 12:
+    return "C"
+  elif valor == 13:
+    return "D"
+  elif valor == 14:
+    return "E"
+  elif valor == 15:
+    return "F"
 
 
-hola = E0()
-hola.set_mac("1B:0F:56:94:7F:2C")
+def To_MAC(valor):
+  mac = ""
+  mascara = 15
+  mascara = mascara << 44
+  
+  tmp = valor & mascara
+  tmp = tmp >>44
+  hexadecimal = GetHEx(tmp)
+  
+  mac = mac + hexadecimal
+  mascara = mascara>>4
+
+  tmp = valor & mascara
+  tmp = tmp >>40
+  hexadecimal = GetHEx(tmp)
+  mac = mac + hexadecimal
+  mac = mac+":"
+  mascara = mascara>>4
+
+  tmp = valor & mascara
+  tmp = tmp >>36
+  hexadecimal = GetHEx(tmp)
+  mac = mac + hexadecimal
+  mascara = mascara>>4
+
+  tmp = valor & mascara
+  tmp = tmp >>32
+  hexadecimal = GetHEx(tmp)
+  mac = mac + hexadecimal
+  mac = mac+":"
+  mascara = mascara>>4
+  tmp = valor & mascara
+  tmp = tmp >>28
+  hexadecimal = GetHEx(tmp)
+  mac = mac + hexadecimal
+  mascara = mascara>>4
+
+  tmp = valor & mascara
+  tmp = tmp >>24
+  hexadecimal = GetHEx(tmp)
+  mac = mac + hexadecimal
+  mac = mac+":"
+  mascara = mascara>>4
+
+  tmp = valor & mascara
+  tmp = tmp >>20
+  hexadecimal = GetHEx(tmp)
+  mac = mac + hexadecimal
+  mascara = mascara>>4
+
+  tmp = valor & mascara
+  tmp = tmp >>16
+  hexadecimal = GetHEx(tmp)
+  mac = mac + hexadecimal
+  mac = mac+":"
+  mascara = mascara>>4
+
+  tmp = valor & mascara
+  tmp = tmp >>12
+  hexadecimal = GetHEx(tmp)
+  mac = mac + hexadecimal
+  mascara = mascara>>4
+
+  tmp = valor & mascara
+  tmp = tmp >>8
+  hexadecimal = GetHEx(tmp)
+  mac = mac + hexadecimal
+  mac = mac+":"
+  mascara = mascara>>4
 
 
-hola.set_clk("02001A5F")
-hola.set_Ck("633A15E0534C0D78D03190BA4AF08721")
-hola.init_vectores()
-hola.init_LFSR()
-hola.clocking()
+  tmp = valor & mascara
+  tmp = tmp >>4
+  hexadecimal = GetHEx(tmp)
+  mac = mac + hexadecimal
+  mascara = mascara>>4
+
+  tmp = valor & mascara
+  hexadecimal = GetHEx(tmp)
+  mac = mac + hexadecimal
+  mascara = mascara>>4
+  return mac
+
+def To_Hex(valor,size):
+  Hex = ""
+  size_t = size - 4
+  while size_t != -4:
+    mascara = 15 << size_t
+    tmp = valor & mascara
+    tmp = tmp >>size_t
+    Hex = Hex + GetHEx(tmp)
+    size_t = size_t - 4
+  return Hex
+
+fichero = open("diccionario.txt","w")
+
+valor_mac_max = pow(2,48)
+valor_ck_max = pow(2,128)
+valor_clk_max = pow(2,32)
+
+linea = ""
+for x in range(pow(2,48)):
+  for y in range(pow(2,128)):
+    for z in range(pow(2,32)):
+      mac = To_MAC(x)
+      ck = To_Hex(y,128)
+      clk = To_Hex(z,32)
+      linea =mac +" "+ ck +" "+ clk
+      print(linea)
+      
+      fichero.write(linea+"\n")
+
+# protocolo = E0()
+
+
+# hola = E0()
+# hola.set_mac("1B:0F:56:94:7F:2C")
+
+
+# hola.set_clk("02001A5F")
+# hola.set_Ck("633A15E0534C0D78D03190BA4AF08721")
+# hola.init_vectores()
+# hola.init_LFSR()
+# hola.clocking()
 
 
