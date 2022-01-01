@@ -35,7 +35,8 @@ class E0 (object):
     self.vector_z=[]
     self.bloqueo = False
               
-
+  def get_z(self):
+    return self.z
 ############################ setter ##################################
 
   # Guardamos el valor del reloj, hasta 26b  
@@ -58,10 +59,10 @@ class E0 (object):
       self.BD_BDDR = self.BD_BDDR << 4
       bit = self.hex_to_bit(hexa)
       self.BD_BDDR =self.BD_BDDR | bit 
-    print ("Inicializando mac")
-    print ("Binario: {0:b}".format(self.BD_BDDR))
-    print ("Hexadecimal: {}".format(self.mac))
-    print ("  LAP  UAP NAP\n{} {} {}".format(self.LAP,self.UAP,self.NAP))
+    # print ("Inicializando mac")
+    # print ("Binario: {0:b}".format(self.BD_BDDR))
+    # print ("Hexadecimal: {}".format(self.mac))
+    # print ("  LAP  UAP NAP\n{} {} {}".format(self.LAP,self.UAP,self.NAP))
     
   
 
@@ -73,11 +74,11 @@ class E0 (object):
     self.vector_2 = self.init_vector_LFSR2()
     self.vector_3 = self.init_vector_LFSR3() 
 
-    print ("\n\n Inicializacion de Vectores: \n     LFSR1            LFSR2              LFSR3           LFSR4 \n{}  {}  {}  {}".format(hex(self.vector_0),hex(self.vector_1),hex(self.vector_2),hex(self.vector_3)))
-    print ("\n\n")
+    # print ("\n\n Inicializacion de Vectores: \n     LFSR1            LFSR2              LFSR3           LFSR4 \n{}  {}  {}  {}".format(hex(self.vector_0),hex(self.vector_1),hex(self.vector_2),hex(self.vector_3)))
+    # print ("\n\n")
 
   def init_LFSR (self):
-    print("\n\n##############Iteraciones iniciales#####################")
+    # print("\n\n##############Iteraciones iniciales#####################")
     for x in range(39):
       if x < 25 :
         #LFSR0
@@ -170,12 +171,12 @@ class E0 (object):
         resultado = self.shift_LFSR(self.LFSR3,self.vector_3)
         self.LFSR3 = resultado[0]
         self.vector_3 = resultado[1]
-      print("\n t: {}".format(x+1))
-      print("LFSR0 {}".format(hex(self.LFSR0)))
-      print("LFSR1 {}".format(hex(self.LFSR1)))
-      print("LFSR2 {}".format(hex(self.LFSR2)))
-      print("LFSR3 {}".format(hex(self.LFSR3)))
-      print("X: {} {} {} {}".format(self.x[0],self.x[1],self.x[2],self.x[3]))
+      # print("\n t: {}".format(x+1))
+      # print("LFSR0 {}".format(hex(self.LFSR0)))
+      # print("LFSR1 {}".format(hex(self.LFSR1)))
+      # print("LFSR2 {}".format(hex(self.LFSR2)))
+      # print("LFSR3 {}".format(hex(self.LFSR3)))
+      # print("X: {} {} {} {}".format(self.x[0],self.x[1],self.x[2],self.x[3]))
 
 
   def shift_LFSR(self,LFSR,vector):
@@ -422,13 +423,13 @@ class E0 (object):
     self.bloqueo = False
     self.z = 0
     cuenta = 0
-    print("\n\n Ultima iteracion de combinacion de bits")
+    # print("\n\n Ultima iteracion de combinacion de bits")
     for x in range(125):
-      print("\n t: {}".format(x+1))
-      print("LFSR0 {}".format(hex(self.LFSR0)))
-      print("LFSR1 {}".format(hex(self.LFSR1)))
-      print("LFSR2 {}".format(hex(self.LFSR2)))
-      print("LFSR3 {}".format(hex(self.LFSR3)))
+      # print("\n t: {}".format(x+1))
+      # print("LFSR0 {}".format(hex(self.LFSR0)))
+      # print("LFSR1 {}".format(hex(self.LFSR1)))
+      # print("LFSR2 {}".format(hex(self.LFSR2)))
+      # print("LFSR3 {}".format(hex(self.LFSR3)))
       #LFSR 0
       resultado = self.shift_LFSR_accarreado_final(self.LFSR0,self.vector_0,0)
       self.LFSR0 = resultado[0]
@@ -461,19 +462,19 @@ class E0 (object):
         XResultantes = XResultantes^y
       
       salida = c ^ XResultantes       
-      print("Salida: {0:b}".format(salida))
+      # print("Salida: {0:b}".format(salida))
       
-      print("X: {} {} {} {}".format(self.x[0],self.x[1],self.x[2],self.x[3]))
+      # print("X: {} {} {} {}".format(self.x[0],self.x[1],self.x[2],self.x[3]))
       cuenta = cuenta + 1
       self.z = self.z << 1
       self.z = self.z | salida
-      print("Z:") 
-      print("{0:b}".format(self.z))
+      # print("Z:") 
+      # print("{0:b}".format(self.z))
       
     
 ########### Acarreo de 200 iteraciones #####################
   def CorregirBits(self):
-    print("\n\n ########## Carga paralela de los bits ##########")
+    # print("\n\n ########## Carga paralela de los bits ##########")
     
     vector_z = self.z
     Bytes_resultantes = []
@@ -505,14 +506,14 @@ class E0 (object):
         
       Bytes_resultantes[x]= final
     self.vector_z = Bytes_resultantes
-    print ("Z : ")
-    for x in self.vector_z:
-      print("{}".format(hex(x)))
+    # print ("Z : ")
+    # for x in self.vector_z:
+      # print("{}".format(hex(x)))
       
 
   def clocking(self):
     cuenta = 0
-    print("\n\n ############# Clocking ############")
+    # print("\n\n ############# Clocking ############")
     for x in range(200):
       
       #LFSR 0
@@ -552,13 +553,13 @@ class E0 (object):
         self.z = self.z << 1
         self.z = self.z | salida 
         # print("{0:b}".format(self.z))
-      print("\n t: {}".format(x+1))
-      print("LFSR0 {}".format(hex(self.LFSR0)))
-      print("LFSR1 {}".format(hex(self.LFSR1)))
-      print("LFSR2 {}".format(hex(self.LFSR2)))
-      print("LFSR3 {}".format(hex(self.LFSR3)))
-      print("X: {} {} {} {}".format(self.x[0],self.x[1],self.x[2],self.x[3]))
-      print("Z: {}".format(salida))
+      # print("\n t: {}".format(x+1))
+      # print("LFSR0 {}".format(hex(self.LFSR0)))
+      # print("LFSR1 {}".format(hex(self.LFSR1)))
+      # print("LFSR2 {}".format(hex(self.LFSR2)))
+      # print("LFSR3 {}".format(hex(self.LFSR3)))
+      # print("X: {} {} {} {}".format(self.x[0],self.x[1],self.x[2],self.x[3]))
+      # print("Z: {}".format(salida))
     # self.z=0
     # print ("{}".format(hex(self.z)))
     # print ("{0:b}".format(self.z))
@@ -1145,35 +1146,29 @@ def To_Hex(valor,size):
     size_t = size_t - 4
   return Hex
 
-fichero = open("diccionario.txt","w")
+fichero = open("./diccionario/diccionario.csv","w")
 
 valor_mac_max = pow(2,48)
 valor_ck_max = pow(2,128)
 valor_clk_max = pow(2,32)
 
 linea = ""
-for x in range(pow(2,48)):
-  for y in range(pow(2,128)):
-    for z in range(pow(2,32)):
-      mac = To_MAC(x)
-      ck = To_Hex(y,128)
-      clk = To_Hex(z,32)
-      linea =mac +" "+ ck +" "+ clk
-      print(linea)
-      
-      fichero.write(linea+"\n")
+mac = "B8:27:EB:B1:DD:38"
+protocolo = E0()
+protocolo.set_mac(mac)
+fichero.write("BDADDR,CK,CLK,Z\n")
 
-# protocolo = E0()
-
-
-# hola = E0()
-# hola.set_mac("1B:0F:56:94:7F:2C")
-
-
-# hola.set_clk("02001A5F")
-# hola.set_Ck("633A15E0534C0D78D03190BA4AF08721")
-# hola.init_vectores()
-# hola.init_LFSR()
-# hola.clocking()
-
-
+for y in range(pow(2,128)):
+  for z in range(pow(2,32)):
+    ck = To_Hex(y,128)
+    clk = To_Hex(z,32)
+    protocolo.set_clk(clk)
+    protocolo.set_Ck(ck)
+    protocolo.init_vectores()
+    protocolo.init_LFSR()
+    protocolo.clocking()
+    z = To_Hex(protocolo.get_z(),128)
+    linea = mac + ","+ck+","+clk+","+z
+    print(linea)
+    fichero.write(linea+"\n")
+  
