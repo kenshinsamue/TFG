@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">simpleBTChat</string>
+    <string name="str_btn_send">Enviar</string>
+    <string name="str_menu_search_device">Buscar</string>
+    <string name="str_menu_bluetooth_on">Activar BT</string>
+    <string name="str_pair_devices">Paired Devices</string>
+    <string name="str_avaible_devices">Avaible Devices</string>
+    <string name="str_menu_scan_devices">Scan Devices</string>
+</resources>
