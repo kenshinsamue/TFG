@@ -1,7 +1,6 @@
 # Creacion del algoritmo E0 para crear la clave cifrante del mensaje
 # Damos por hecho que los valores Hexadecimales son strings en mayuscula 
-
-
+import random
 class E0 (object):
 
   # BD_BDDR es la direccion en formato binario/decimal
@@ -424,7 +423,7 @@ class E0 (object):
     self.z = 0
     cuenta = 0
     # print("\n\n Ultima iteracion de combinacion de bits")
-    for x in range(125):
+    for x in range(128):
       # print("\n t: {}".format(x+1))
       # print("LFSR0 {}".format(hex(self.LFSR0)))
       # print("LFSR1 {}".format(hex(self.LFSR1)))
@@ -1146,29 +1145,41 @@ def To_Hex(valor,size):
     size_t = size_t - 4
   return Hex
 
-fichero = open("./diccionario/diccionario.csv","w")
 
-valor_mac_max = pow(2,48)
-valor_ck_max = pow(2,128)
-valor_clk_max = pow(2,32)
 
+fichero = open("./diccionario/diccionario.csv","a+")
 linea = ""
-mac = "B8:27:EB:B1:DD:38"
+# mac = "B8:27:EB:B1:DD:38"
 protocolo = E0()
-protocolo.set_mac(mac)
-fichero.write("BDADDR,CK,CLK,Z\n")
-
-for y in range(pow(2,128)):
-  for z in range(pow(2,32)):
-    ck = To_Hex(y,128)
-    clk = To_Hex(z,32)
-    protocolo.set_clk(clk)
-    protocolo.set_Ck(ck)
-    protocolo.init_vectores()
-    protocolo.init_LFSR()
-    protocolo.clocking()
-    z = To_Hex(protocolo.get_z(),128)
-    linea = mac + ","+ck+","+clk+","+z
-    print(linea)
-    fichero.write(linea+"\n")
+# protocolo.set_mac(mac)
+# fichero.write("BDADDR,CK,CLK,Z\n")
+continuar = False
+x = 0
+y = 0
+z = 0
+x_max = int(pow(2,48))
+y_max = int(pow(2,128))
+z_max = int(pow(2,32))
+while True:
+  protocolo = E0()
+  x = random.randint(0,x_max)
+  y = random.randint(0,y_max)
+  z = random.randint(0,z_max)
+  mac = To_MAC(x)
+  protocolo.set_mac(mac)
+  # if continuar == False:
+  #   z = 10475831
+  #   continuar = True
+  ck = To_Hex(y,128)
+  clk = To_Hex(z,32)
+  protocolo.set_clk(clk)
+  protocolo.set_Ck(ck)
+  protocolo.init_vectores()
+  protocolo.init_LFSR()
+  protocolo.clocking()
+  Z = To_Hex(protocolo.get_z(),128)
+  linea = mac + ","+ck+","+clk+","+Z
+  print(linea)
+  fichero.write(linea+"\n")
+   
   
