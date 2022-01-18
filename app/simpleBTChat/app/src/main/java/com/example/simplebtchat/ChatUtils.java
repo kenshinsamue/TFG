@@ -14,6 +14,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.LinkPermission;
 import java.util.UUID;
 
@@ -45,11 +46,12 @@ public class ChatUtils {
   public int getState(){
     return state;
   }
+//  Metodo que permite cambiar los estados de la comunicacion y enviarselo a la activity principal
   public synchronized void setState(int state){
     this.state = state;
     handler.obtainMessage( MainActivity.MESSAGE_STATE_CHANGED, state,-1).sendToTarget();
   }
-  private synchronized void start(){
+  public synchronized void reset(){
     if(connectThread!= null){
       connectThread.cancel();
       connectThread = null;
@@ -62,34 +64,29 @@ public class ChatUtils {
       connectedThread.cancel();
       connectedThread = null;
     }
+  }
+//  Inicializamos el proceso de comunicacion
+  private synchronized void start(){
+    reset();
     setState(STATE_LISTEN);
   }
+// paramos el proceso de comunicacion
   public synchronized void stop(){
-    if(connectThread!=null){
-      connectThread.cancel();
-      connectThread = null;
-    }
-    if(acceptThread == null ){
-      acceptThread.cancel();
-      acceptThread = null ;
-    }
-    if(connectedThread != null){
-      connectedThread.cancel();
-      connectedThread = null;
-    }
+    reset();
     setState(STATE_NONE);
   }
+//  Conectamos a un dispositivo
   public void connect (BluetoothDevice device){
-    // cuando conectamos el state es 0
+//    si el dispositivo ya esta conectado cancelamos el thread que nos permita conectar
     if (state == STATE_CONNECTED){
       connectThread.cancel();
       connectThread = null;
     }
-
+// Creamos una instancia de Thread para conectar al dispositivo e inicializamso
     connectThread = new ConnectThread(device);
     connectThread.start();
 
-
+//  Cancelamos cualquier thread que mantenga una comunicacion
     if(connectedThread != null){
       connectedThread.cancel();
       connectedThread = null;
@@ -98,7 +95,7 @@ public class ChatUtils {
     setState(STATE_CONNECTING);
 
   }
-
+//Metodo para escribir al hilo de conexion
   public void write(byte[] buffer){
     ConnectedThread conThread;
     synchronized (this){
@@ -110,19 +107,64 @@ public class ChatUtils {
     conThread.write(buffer);
   }
 
+//  Mensaje que se encarga de actuar en caso de que la conexion se pierda
+  private void connectionLost(){
+//     Hacemos que la aplicacion tenga en cuenta de que la conexion se perdio
+    sendMessageToMain("Connection Lost");
+//    hacemos que, ya que se descarto la comunicacion, pueda empezar a escuchar a otro dispositivo
+    ChatUtils.this.start();
+  }
+//  Metodo que permite enviar un mensaje al MainActivity
+  private synchronized void sendMessageToMain(String mensaje){
+    Message message = handler.obtainMessage(MainActivity.MESSAGE_TOAST);
+    Bundle bundle = new Bundle();
+    bundle.putString(MainActivity.TOAST,mensaje);
+    message.setData(bundle);
+    handler.sendMessage(message);
+  }
+// Si hay algun fallo en la comunicacion, al empezar
+  private synchronized void connectionFailed(){
+    sendMessageToMain("Cant connect to the device");
+    ChatUtils.this.start();
+  }
+//Metodo para comunicar al MainActivity que actualmente el dispositivo esta conectado a otro
+  private synchronized void connected(BluetoothSocket socket, BluetoothDevice device){
+//     Cancelamos los hilos para conectar
+    if(connectThread!=null){
+      connectThread.cancel();
+      connectThread = null;
+    }
+    if(connectedThread != null){
+      connectedThread.cancel();
+      connectedThread = null;
+    }
+//    Creamos un nuevo hilo de conexion pasandole un socket
+    connectedThread = new ConnectedThread(socket);
+    connectedThread.start();
+
+//  Notificamos a main
+    Message message = handler.obtainMessage(MainActivity.MESSAGE_DEVICE_NAME);
+    Bundle bundle = new Bundle();
+    bundle.putString(MainActivity.Device_NAME, device.getName());
+    message.setData(bundle);
+    handler.sendMessage(message);
+    setState(STATE_CONNECTED);
+  }
   private class AcceptThread extends Thread{
     private BluetoothServerSocket serverSocket;
-
+//    Constructor Creamos un socket que escucha (servidor) y le especificamos que usara la version clasica de bluetooth (BR/EDR)
     public AcceptThread(){
       BluetoothServerSocket tmp = null;
       try{
-        tmp =bluetoothAdapter.listenUsingRfcommWithServiceRecord(APP_NAME,APP_UUID);
+        tmp = bluetoothAdapter.listenUsingRfcommWithServiceRecord(APP_NAME,APP_UUID);
       }catch (IOException e){
         Log.e("Accept->constructor", e.toString());
       }
       serverSocket = tmp;
     }
+//
     public void run (){
+//       Si identifica una comunicacion a travez de un socket lo acepta
       BluetoothSocket socket = null;
       try{
         socket = serverSocket.accept();
@@ -135,12 +177,15 @@ public class ChatUtils {
 
         }
       }
+//      En caso de que el socket exista
       if(socket!=null){
+//        Si el dispositivo esta en estado de escucha o en el proceso de conexion creamos un thread de conexion con el socket local y el del dispositivo remoto
         switch (state){
           case STATE_LISTEN:
           case STATE_CONNECTING:
             connected(socket,socket.getRemoteDevice());
             break;
+//        Si el estado del dispositivo es nulo o conectado lo que hacemos es cancelar el socket
           case STATE_NONE:
           case STATE_CONNECTED:
             try{
@@ -165,9 +210,9 @@ public class ChatUtils {
 
     private final BluetoothSocket socket;
     private final BluetoothDevice device;
-
+//  Constructor del Thread, recibimos un device
     public ConnectThread(BluetoothDevice device){
-
+//  creamos un socket para el dispositivo remoto a travez de Bluetooth clasico (BD/EDR)
       this.device = device;
       BluetoothSocket tmp = null;
       try{
@@ -179,12 +224,13 @@ public class ChatUtils {
     }
 
     public void run (){
-
+//  Intentamos conectar al socket del dispositivo remoto
       try{
         socket.connect();
       }catch (IOException e_){
         Log.e("Connect->Run", e_.toString());
         try{
+          Log.d("La ejecucion del trhead ha sido interrumpida",", vamos a cerrar el socket");
           socket.close();
         }catch (IOException e){
           Log.e("Connect->CloseSocket", e.toString());
@@ -196,6 +242,7 @@ public class ChatUtils {
       synchronized (ChatUtils.this){
         connectThread = null;
       }
+//    Terminamos de conectar y notificamos al sistema de que estamos conectados
       connected(socket,device);
     }
 
@@ -232,8 +279,11 @@ public class ChatUtils {
     public void run(){
       byte [] buffer = new byte[1024];
       int bytes;
+      Log.e("Estamos escuchando ... :",buffer.toString());
       try{
         bytes = inputStream.read(buffer);
+        Log.e("Mensaje Recibido :",new String(buffer,StandardCharsets.UTF_8));
+
         handler.obtainMessage(MainActivity.MESSAGE_READ,bytes,-1,buffer).sendToTarget();
       }catch (IOException e){
         connectionLost();
@@ -241,56 +291,28 @@ public class ChatUtils {
     }
 
     public void write(byte[] buffer){
+      Log.e("El mensaje antes de enviar es : ",new String(buffer, StandardCharsets.UTF_8));
+      int tmp = state;
       try {
         outputStream.write(buffer);
+        Log.e("El mensaje ha sido enviado con exito",buffer.toString());
+
+        Log.e("El estado actual es : ",String.valueOf(tmp));
         handler.obtainMessage(MainActivity.MESSAGE_WRITE,-1,-1,buffer).sendToTarget();
-      }catch (IOException e){}
+      }catch (IOException e){
+        Log.e("Error al escribir",e.toString());
+      }
     }
 
     public void cancel (){
       try{
         socket.close();
-      }catch (IOException e){}
+      }catch (IOException e){
+        Log.e(" Error al cerrar  -> ",e.toString());
+      }
     }
 
 
   }
-  private void connectionLost(){
-    Message message = handler.obtainMessage(MainActivity.MESSAGE_TOAST);
-    Bundle bundle = new Bundle();
-    bundle.putString(MainActivity.TOAST,"Connection Lost");
-    message.setData(bundle);
-    handler.sendMessage(message);
-    ChatUtils.this.start();
-  }
 
-
-  private synchronized void connectionFailed(){
-    Message message = handler.obtainMessage(MainActivity.MESSAGE_TOAST);
-    Bundle bundle = new Bundle();
-    bundle.putString(MainActivity.TOAST,"Cant connect to the device");
-    message.setData(bundle);
-    handler.sendMessage(message);
-    ChatUtils.this.start();
-  }
-
-  private synchronized void connected(BluetoothSocket socket, BluetoothDevice device){
-    if(connectThread!=null){
-      connectThread.cancel();
-      connectThread = null;
-    }
-    if(connectedThread != null){
-      connectedThread.cancel();
-      connectedThread = null;
-    }
-    connectedThread = new ConnectedThread(socket);
-    connectedThread.start();
-
-    Message message = handler.obtainMessage(MainActivity.MESSAGE_DEVICE_NAME);
-    Bundle bundle = new Bundle();
-    bundle.putString(MainActivity.Device_NAME, device.getName());
-    message.setData(bundle);
-    handler.sendMessage(message);
-    setState(STATE_CONNECTED);
-  }
 }

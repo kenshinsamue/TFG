@@ -38,6 +38,8 @@ public class DeviceListActivity extends AppCompatActivity {
     context = this;
     init();
   }
+
+//Este Metodo se dedica
   private void init (){
 //    Nos traemos las Views de los dispositivos paired y los disponibles
     listpairedDevices = findViewById(R.id.list_paired_devices);
@@ -49,7 +51,7 @@ public class DeviceListActivity extends AppCompatActivity {
 
     listpairedDevices.setAdapter(adapterPairedDevices);
     listAvaibleDevices.setAdapter(adapterAvaibleDevices);
-
+//  Creamos un Listener para la lista de dispositivos disponibles de modo que al clickar iniciamos el chat con ese dispositivo
     listAvaibleDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -76,7 +78,7 @@ public class DeviceListActivity extends AppCompatActivity {
 
     IntentFilter intentFilter1 = new IntentFilter(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
     registerReceiver(bluetootDeviceListener,intentFilter1);
-
+// Litener para los dispositivos que ya estan emparejados , al seleccionarlos empieza el chat
     listpairedDevices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -94,6 +96,7 @@ public class DeviceListActivity extends AppCompatActivity {
       }
     });
   }
+//  Metodo de Receptor de comunicaciones broadcast
   private BroadcastReceiver bluetootDeviceListener = new BroadcastReceiver() {
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -115,12 +118,13 @@ public class DeviceListActivity extends AppCompatActivity {
       }
     }
   };
+//  Incluimos el menu en la actividad
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.menu_device_list,menu);
     return super.onCreateOptionsMenu(menu);
   }
-
+//  Verificar que hacer cuando seleccionas algunos de los elementos del menu
   @Override
   public boolean onOptionsItemSelected(@NonNull MenuItem item) {
     switch (item.getItemId()){
@@ -131,6 +135,8 @@ public class DeviceListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
   }
+
+//  Metodo que permite hacer Buscar dispositivos sercanos
   private void scannDevices(){
     progresScannDevices.setVisibility(View.VISIBLE);
     adapterAvaibleDevices.clear();
