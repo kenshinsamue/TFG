@@ -91,9 +91,7 @@ public class ChatUtils {
       connectedThread.cancel();
       connectedThread = null;
     }
-
     setState(STATE_CONNECTING);
-
   }
 //Metodo para escribir al hilo de conexion
   public void write(byte[] buffer){
@@ -202,12 +200,10 @@ public class ChatUtils {
        serverSocket.close();
       }catch (IOException e){
         Log.e("Accept->CloseServerSocket", e.toString());
-
       }
     }
   }
   private class ConnectThread extends Thread{
-
     private final BluetoothSocket socket;
     private final BluetoothDevice device;
 //  Constructor del Thread, recibimos un device
@@ -238,14 +234,12 @@ public class ChatUtils {
         connectionFailed();
         return;
       }
-
       synchronized (ChatUtils.this){
         connectThread = null;
       }
 //    Terminamos de conectar y notificamos al sistema de que estamos conectados
       connected(socket,device);
     }
-
 
     public void cancel(){
       try {
@@ -262,11 +256,9 @@ public class ChatUtils {
     private final OutputStream outputStream;
 
     public ConnectedThread(BluetoothSocket socket){
-
       this.socket = socket;
       InputStream tmpin = null;
       OutputStream tmpout = null;
-
       try{
         tmpin = socket.getInputStream();
         tmpout = socket.getOutputStream();
@@ -279,25 +271,20 @@ public class ChatUtils {
     public void run(){
       byte [] buffer = new byte[1024];
       int bytes;
-      Log.e("Estamos escuchando ... :",buffer.toString());
-      try{
-        bytes = inputStream.read(buffer);
-        Log.e("Mensaje Recibido :",new String(buffer,StandardCharsets.UTF_8));
-
-        handler.obtainMessage(MainActivity.MESSAGE_READ,bytes,-1,buffer).sendToTarget();
-      }catch (IOException e){
-        connectionLost();
+      while(true){
+        try{
+          bytes = inputStream.read(buffer);
+          handler.obtainMessage(MainActivity.MESSAGE_READ,bytes,-1,buffer).sendToTarget();
+        }catch (IOException e){
+          connectionLost();
+        }
       }
     }
 
     public void write(byte[] buffer){
-      Log.e("El mensaje antes de enviar es : ",new String(buffer, StandardCharsets.UTF_8));
       int tmp = state;
       try {
         outputStream.write(buffer);
-        Log.e("El mensaje ha sido enviado con exito",buffer.toString());
-
-        Log.e("El estado actual es : ",String.valueOf(tmp));
         handler.obtainMessage(MainActivity.MESSAGE_WRITE,-1,-1,buffer).sendToTarget();
       }catch (IOException e){
         Log.e("Error al escribir",e.toString());
@@ -311,8 +298,5 @@ public class ChatUtils {
         Log.e(" Error al cerrar  -> ",e.toString());
       }
     }
-
-
   }
-
 }
