@@ -498,5 +498,5 @@ class BtbbPacket(object):
 
     def __str__(self):
         #return str(self.to_dict())
-        return str(dict((k,v) for k,v in self.to_dict().iteritems() if v is not None))
+        return str(dict((k,v) for k,v in self.to_dict().items() if v is not None))
 

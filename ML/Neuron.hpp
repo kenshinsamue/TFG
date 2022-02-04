@@ -35,14 +35,14 @@ class Neuron{
     unsigned m_myIndex;
     double m_gradient;
     vector<Conexion>m_outputWeights;
-    static double transferFucntion(double x){
-      // esta funcion se encarga de aplicar una funcion a un valor dado para ajustarlo al un rango de valores predeterminados
+          // esta funcion se encarga de aplicar una funcion a un valor dado para ajustarlo al un rango de valores predeterminados
       // en este caso usamos la funcion tangente para obteenr valores desde -1 hasta 1 
-      return tanh(x);
+    static double transferFucntion(double x){
+      return 1 / (1 + exp(-x)) ;
     }
-    static double transferFucntionDerivada(double x){
       // esta funcion se encarga de retornar la derivada de la funcion anteriormente usada  
-      return 1.0-(x * x);
+    static double transferFucntionDerivada(double x){
+      return x * (1 - x );
     }
     static double randomWeight(){return rand()/double(RAND_MAX);}
 

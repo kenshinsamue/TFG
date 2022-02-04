@@ -32,9 +32,10 @@ def Menu():
 def main() -> None:
   if sys.platform not in PLATAFORMAS_PERMITIDAS:
     raise RuntimeError("Error,Plataforma no compatible")
+# si ejecutamos sin comandos 
   if len(sys.argv) == 1:
     Menu()
-   
+# En el caso de que establezcamos parametros
   else:
     LeerConsola()
 

@@ -1,3 +1,4 @@
+from gettext import install
 import os
 from setuptools import setup
 
@@ -10,7 +11,7 @@ def read(fname):
 
 setup(
     name = "TFG ",
-    version = "0.0.1",
+    version = "0.0.2",
     author = "Enrique Manuel Pedroza Castillo",
     author_email = "predatoren1@gmail.com",
     description = ("Trabajo de fin de grado"),
