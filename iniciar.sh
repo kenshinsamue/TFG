@@ -7,17 +7,17 @@ while [[ $# -gt 0 ]]; do
   case $1 in
     -l|--lap)
       LAP="$2"
-      shift # past argument
-      shift # past value
+      shift 
+      shift
       ;;
     -u|--UAP)
       UAP="$2"
-      shift # past argument
-      shift # past value
+      shift 
+      shift 
       ;;
     -r|--register)
       LOG="$2"
-      shift # past argument
+      shift
       shift
       ;;
     -f|--filename)
@@ -26,8 +26,8 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     -t)
-      TIME="$2" # save positional arg
-      shift # past argument
+      TIME="$2" 
+      shift 
       shift
       ;;
   esac
@@ -43,4 +43,4 @@ echo "TIME = ${TIME}"
 
 
 
-# ubertooth-rx -q informacion.pcap -l df039f -u 49 -t 60 > registros.log
+ubertooth-rx -q ${FILENAME} -l ${LAP} -u ${UAP} -t ${TIME} > ${LOG}

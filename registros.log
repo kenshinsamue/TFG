@@ -1,45 +1,106 @@
-systime=1644428797 ch=57 LAP=df039f err=0 clkn=13303 clk_offset=5296 s=-32 n=-55 snr=23
+systime=1644435139 ch=60 LAP=df039f err=0 clkn=79884 clk_offset=2648 s=-45 n=-55 snr=10
 offset > CLK_TUNE_TIME
-CLK100ns Trim: 3046
-systime=1644428804 ch=27 LAP=df039f err=0 clkn=34042 clk_offset=1658 s=-36 n=-55 snr=19
-systime=1644428805 ch=52 LAP=df039f err=0 clkn=36890 clk_offset=1565 s=-32 n=-55 snr=23
-systime=1644428805 ch=52 LAP=df039f err=0 clkn=36900 clk_offset=1582 s=-32 n=-55 snr=23
-systime=1644428818 ch=30 LAP=df039f err=0 clkn=80506 clk_offset=298 s=-34 n=-55 snr=21
-offset < CLK_TUNE_TIME
-CLK100ns Trim: 4298
-Clock drifted -1952 in 21.000937 s. -9 PPM too slow.
-systime=1644428820 ch=74 LAP=df039f err=1 clkn=84470 clk_offset=2133 s=-30 n=-55 snr=25
-systime=1644428822 ch=68 LAP=df039f err=0 clkn=92662 clk_offset=1904 s=-31 n=-55 snr=24
-systime=1644428827 ch=56 LAP=df039f err=0 clkn=109046 clk_offset=1417 s=-31 n=-55 snr=24
-systime=1644428832 ch=70 LAP=df039f err=0 clkn=123572 clk_offset=1014 s=-31 n=-55 snr=24
-systime=1644428835 ch=70 LAP=df039f err=0 clkn=133754 clk_offset=690 s=-33 n=-55 snr=22
-offset < CLK_TUNE_TIME
-CLK100ns Trim: 4690
-Clock drifted -1560 in 16.640000 s. -9 PPM too slow.
-systime=1644428835 ch=23 LAP=df039f err=1 clkn=133882 clk_offset=2254 s=-34 n=-55 snr=21
-systime=1644428837 ch=54 LAP=df039f err=0 clkn=138912 clk_offset=2255 s=-30 n=-55 snr=25
-systime=1644428839 ch=33 LAP=df039f err=0 clkn=147862 clk_offset=2235 s=-34 n=-55 snr=21
-CLK6 = 0x9 found after 4 total packets.
+CLK100ns Trim: 398
+systime=1644435139 ch=60 LAP=df039f err=0 clkn=79948 clk_offset=2245 s=-40 n=-55 snr=15
+systime=1644435139 ch=13 LAP=df039f err=0 clkn=80009 clk_offset=5361 s=-52 n=-55 snr=3
+systime=1644435140 ch=13 LAP=df039f err=0 clkn=80041 clk_offset=5360 s=-57 n=-55 snr=-2
+systime=1644435140 ch=13 LAP=df039f err=1 clkn=80073 clk_offset=5383 s=-54 n=-55 snr=1
+systime=1644435140 ch=13 LAP=df039f err=0 clkn=80105 clk_offset=5349 s=-49 n=-55 snr=6
+offset > CLK_TUNE_TIME
+CLK100ns Trim: 3099
+Clock drifted 3099 in 0.069062 s. 4487 PPM too fast.
+systime=1644435140 ch=62 LAP=df039f err=0 clkn=80535 clk_offset=5385 s=-37 n=-55 snr=18
+systime=1644435140 ch=62 LAP=df039f err=0 clkn=80567 clk_offset=5374 s=-38 n=-55 snr=17
+systime=1644435140 ch=19 LAP=df039f err=0 clkn=81971 clk_offset=3459 s=-49 n=-55 snr=6
+systime=1644435147 ch=55 LAP=df039f err=0 clkn=103622 clk_offset=2918 s=-36 n=-55 snr=19
+offset > CLK_TUNE_TIME
+CLK100ns Trim: 668
+Clock drifted 668 in 7.349062 s. 9 PPM too fast.
+systime=1644435147 ch=55 LAP=df039f err=0 clkn=103624 clk_offset=2944 s=-36 n=-55 snr=19
+systime=1644435147 ch= 8 LAP=df039f err=0 clkn=103750 clk_offset=2254 s=-50 n=-55 snr=5
+systime=1644435147 ch= 8 LAP=df039f err=1 clkn=103752 clk_offset=2258 s=-39 n=-55 snr=16
+systime=1644435147 ch=40 LAP=df039f err=2 clkn=103880 clk_offset=2252 s=-33 n=-55 snr=22
+CLK6 = 0x2b found after 3 total packets.
 
 Calculating complete hopping sequence.
 Hopping sequence calculated.
-26643 initial CLK1-27 candidates
-systime=1644428841 ch=58 LAP=df039f err=0 clkn=150878 clk_offset=2246 s=-32 n=-55 snr=23
-systime=1644428844 ch=34 LAP=df039f err=0 clkn=164196 clk_offset=2236 s=-34 n=-55 snr=21
-systime=1644428847 ch=69 LAP=df039f err=1 clkn=170826 clk_offset=2223 s=-32 n=-55 snr=23
-systime=1644428847 ch=22 LAP=df039f err=0 clkn=170942 clk_offset=2214 s=-37 n=-55 snr=18
-systime=1644428849 ch=44 LAP=df039f err=1 clkn=178434 clk_offset=2217 s=-32 n=-55 snr=23
-systime=1644428849 ch=44 LAP=df039f err=0 clkn=178444 clk_offset=2222 s=-32 n=-55 snr=23
-CLK6 = 0x9 found after 6 total packets.
+26619 initial CLK1-27 candidates
+systime=1644435148 ch=39 LAP=df039f err=0 clkn=108618 clk_offset=2127 s=0 n=-55 snr=55
+systime=1644435148 ch=39 LAP=df039f err=0 clkn=108628 clk_offset=2150 s=0 n=-55 snr=55
+systime=1644435149 ch=41 LAP=df039f err=0 clkn=109286 clk_offset=2117 s=-47 n=-55 snr=8
+systime=1644435149 ch=41 LAP=df039f err=0 clkn=109296 clk_offset=2124 s=-44 n=-55 snr=11
+systime=1644435150 ch=70 LAP=df039f err=0 clkn=113464 clk_offset=2023 s=0 n=-55 snr=55
+systime=1644435151 ch=29 LAP=df039f err=0 clkn=115530 clk_offset=1961 s=-16 n=-55 snr=39
+systime=1644435151 ch=65 LAP=df039f err=1 clkn=116914 clk_offset=1926 s=0 n=-55 snr=55
+systime=1644435153 ch=23 LAP=df039f err=2 clkn=123722 clk_offset=1747 s=-29 n=-55 snr=26
+offset < CLK_TUNE_TIME
+CLK100ns Trim: 5747
+Clock drifted -503 in 6.281250 s. -8 PPM too slow.
+systime=1644435153 ch=23 LAP=df039f err=0 clkn=123732 clk_offset=2263 s=-29 n=-55 snr=26
+CLK6 = 0x2b found after 5 total packets.
 
 Found hopping sequence in cache.
-26584 initial CLK1-27 candidates
-systime=1644428853 ch=63 LAP=df039f err=0 clkn=190194 clk_offset=2199 s=-30 n=-55 snr=25
-systime=1644428853 ch=63 LAP=df039f err=0 clkn=190204 clk_offset=2207 s=-30 n=-55 snr=25
-systime=1644428853 ch=52 LAP=df039f err=0 clkn=191922 clk_offset=2192 s=-31 n=-55 snr=24
-CLK6 = 0x9 found after 3 total packets.
+26543 initial CLK1-27 candidates
+systime=1644435153 ch=55 LAP=df039f err=0 clkn=123860 clk_offset=2264 s=0 n=-55 snr=55
+systime=1644435154 ch=44 LAP=df039f err=2 clkn=125364 clk_offset=2217 s=0 n=-55 snr=55
+systime=1644435154 ch=29 LAP=df039f err=0 clkn=125680 clk_offset=2211 s=-21 n=-55 snr=34
+systime=1644435156 ch=17 LAP=df039f err=0 clkn=131914 clk_offset=2049 s=-31 n=-55 snr=24
+systime=1644435156 ch=49 LAP=df039f err=0 clkn=132042 clk_offset=2046 s=0 n=-55 snr=55
+systime=1644435157 ch=46 LAP=df039f err=1 clkn=136148 clk_offset=1948 s=0 n=-55 snr=55
+systime=1644435157 ch=31 LAP=df039f err=2 clkn=136398 clk_offset=1921 s=-74 n=-55 snr=-19
+offset < CLK_TUNE_TIME
+CLK100ns Trim: 5921
+Clock drifted -329 in 3.961250 s. -8 PPM too slow.
+systime=1644435159 ch= 2 LAP=df039f err=0 clkn=142254 clk_offset=2095 s=-48 n=-55 snr=7
+systime=1644435159 ch= 2 LAP=df039f err=2 clkn=142264 clk_offset=2110 s=-40 n=-55 snr=15
+systime=1644435159 ch=34 LAP=df039f err=0 clkn=142392 clk_offset=2102 s=-5 n=-55 snr=50
+systime=1644435159 ch=34 LAP=df039f err=1 clkn=142446 clk_offset=2089 s=-74 n=-55 snr=-19
+CLK6 = 0x2b found after 7 total packets.
 
 Found hopping sequence in cache.
-26468 initial CLK1-27 candidates
+26537 initial CLK1-27 candidates
+systime=1644435159 ch=36 LAP=df039f err=1 clkn=143040 clk_offset=2086 s=-10 n=-55 snr=45
+systime=1644435160 ch=40 LAP=df039f err=0 clkn=144330 clk_offset=2036 s=-5 n=-55 snr=50
+systime=1644435160 ch=40 LAP=df039f err=0 clkn=144340 clk_offset=2052 s=-5 n=-55 snr=50
+systime=1644435163 ch=55 LAP=df039f err=0 clkn=154214 clk_offset=1780 s=0 n=-55 snr=55
+systime=1644435164 ch=52 LAP=df039f err=1 clkn=158320 clk_offset=1674 s=0 n=-55 snr=55
+systime=1644435164 ch=22 LAP=df039f err=1 clkn=158776 clk_offset=1660 s=-16 n=-55 snr=39
+systime=1644435164 ch=71 LAP=df039f err=1 clkn=159286 clk_offset=1623 s=-70 n=-55 snr=-15
+offset < CLK_TUNE_TIME
+CLK100ns Trim: 5623
+Clock drifted -627 in 7.152500 s. -8 PPM too slow.
+systime=1644435165 ch=45 LAP=df039f err=0 clkn=161106 clk_offset=2220 s=0 n=-55 snr=55
+CLK6 = 0x2b found after 3 total packets.
 
-Acquired CLK1-27 = 0x45ffe47
+Found hopping sequence in cache.
+26570 initial CLK1-27 candidates
+systime=1644435165 ch=45 LAP=df039f err=0 clkn=161116 clk_offset=2223 s=0 n=-55 snr=55
+systime=1644435166 ch=21 LAP=df039f err=0 clkn=163520 clk_offset=2161 s=-21 n=-55 snr=34
+systime=1644435166 ch=55 LAP=df039f err=1 clkn=164226 clk_offset=2125 s=-70 n=-55 snr=-15
+systime=1644435166 ch=42 LAP=df039f err=0 clkn=165202 clk_offset=2099 s=0 n=-55 snr=55
+systime=1644435166 ch=42 LAP=df039f err=0 clkn=165212 clk_offset=2109 s=0 n=-55 snr=55
+systime=1644435167 ch= 1 LAP=df039f err=0 clkn=167228 clk_offset=2060 s=-40 n=-55 snr=15
+systime=1644435167 ch=33 LAP=df039f err=0 clkn=167346 clk_offset=2047 s=0 n=-55 snr=55
+systime=1644435168 ch=77 LAP=df039f err=0 clkn=171314 clk_offset=1929 s=0 n=-55 snr=55
+systime=1644435168 ch=30 LAP=df039f err=0 clkn=171442 clk_offset=1926 s=-5 n=-55 snr=50
+systime=1644435168 ch=47 LAP=df039f err=1 clkn=171834 clk_offset=1915 s=-72 n=-55 snr=-17
+offset < CLK_TUNE_TIME
+CLK100ns Trim: 5915
+Clock drifted -335 in 3.921250 s. -8 PPM too slow.
+systime=1644435169 ch=74 LAP=df039f err=1 clkn=175410 clk_offset=2160 s=0 n=-55 snr=55
+systime=1644435169 ch=27 LAP=df039f err=2 clkn=175538 clk_offset=2147 s=-21 n=-55 snr=34
+systime=1644435169 ch=27 LAP=df039f err=0 clkn=175548 clk_offset=2160 s=-16 n=-55 snr=39
+systime=1644435170 ch=50 LAP=df039f err=2 clkn=177878 clk_offset=2101 s=-70 n=-55 snr=-15
+CLK6 = 0x2b found after 10 total packets.
+
+Found hopping sequence in cache.
+26418 initial CLK1-27 candidates
+systime=1644435171 ch=71 LAP=df039f err=1 clkn=179506 clk_offset=2045 s=0 n=-55 snr=55
+systime=1644435172 ch=21 LAP=df039f err=0 clkn=183740 clk_offset=1937 s=-28 n=-55 snr=27
+systime=1644435173 ch=18 LAP=df039f err=0 clkn=187826 clk_offset=1805 s=-28 n=-55 snr=27
+systime=1644435173 ch=18 LAP=df039f err=0 clkn=187836 clk_offset=1816 s=-28 n=-55 snr=27
+offset < CLK_TUNE_TIME
+CLK100ns Trim: 5816
+Clock drifted -434 in 5.000625 s. -8 PPM too slow.
+systime=1644435174 ch=71 LAP=df039f err=0 clkn=189646 clk_offset=2196 s=-70 n=-55 snr=-15
+systime=1644435174 ch=62 LAP=df039f err=0 clkn=191804 clk_offset=2136 s=0 n=-55 snr=55
