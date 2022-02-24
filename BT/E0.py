@@ -1147,12 +1147,12 @@ def To_Hex(valor,size):
 
 
 
-fichero = open("./diccionario/diccionario.csv","a+")
+fichero = open("../ML/diccionario/parte57_nuevo.csv","a+")
 linea = ""
 # mac = "B8:27:EB:B1:DD:38"
 protocolo = E0()
 # protocolo.set_mac(mac)
-# fichero.write("BDADDR,CK,CLK,Z\n")
+fichero.write("BDADDR,CK,CLK,Z\n")
 continuar = False
 x = 0
 y = 0

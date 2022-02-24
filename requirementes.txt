@@ -1,3 +1,5 @@
 keyboard
 pyshark
 pandas
+tensorflow
+matplotlib

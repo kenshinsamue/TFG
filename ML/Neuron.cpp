@@ -1,5 +1,5 @@
 #include "Neuron.hpp"
-double Neuron::eta = 0.15;
+double Neuron::eta = 0.2;
 double Neuron::alpha = 0.5;
 
 Neuron::Neuron(unsigned numSalidas, unsigned Indice){

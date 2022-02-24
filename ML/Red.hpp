@@ -10,6 +10,14 @@ class Red{
 
   public:
     Red(){}
+    string Get_n_cap_ocultas(){
+      string nombre = "";
+      nombre = to_string(m_layer.size()-2);
+      nombre +="_";
+      nombre += to_string((m_layer[m_layer.size()-2].size())-1);
+      nombre+=".txt";
+      return nombre;
+    }
     Red(const vector<unsigned> &topologia);
     void feedForward(vector<double> &inputVals);
     void backProp(vector<double> &targetVals);
@@ -64,8 +72,8 @@ class Red{
       fichero.close();
       mostrar();
     }
-    void SafeConfig(){
-      ofstream fichero =ofstream("config.txt");
+    void SafeConfig(string salida){
+      ofstream fichero =ofstream(salida);
       fichero<<m_layer.size()<<endl;
       
       for(int i=0;i<m_layer.size();i++){          // Para cada capa
