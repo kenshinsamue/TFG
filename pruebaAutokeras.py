@@ -9,6 +9,7 @@ import numpy as np
 from matplotlib import pyplot
 from autokeras import StructuredDataRegressor
 from sklearn.model_selection import train_test_split
+
 def cargar_datos(numero):
   pd.set_option('display.max_columns',None)
   muestra = pd.read_csv("ML/diccionario/partes_original/muestra{}.csv".format(numero))
@@ -24,6 +25,7 @@ def cargar_datos(numero):
     x_ = float(x)
     datos.append(x_/max)
   muestra["Z"] = tf.cast(datos,dtype=tf.float64)
+  print(len(muestra))
 
   muestras_objetivo = muestra.copy()
   mac_max = muestra["BDADDR"].max()
@@ -51,13 +53,23 @@ objetivo = informacion[1]
 # 26426/26426
 
 # print (muestra_entrenamiento.shape(),objetivo.shape())
-X_train, X_test, y_train, y_test =train_test_split(muestra_entrenamiento,objetivo,test_size=0.33,random_state=1)
-search = StructuredDataRegressor(max_trials=15,loss='mean_squared_error')
-search.fit(x=X_train,y=y_train,verbose=0,batch_size=32)
-
+X_train, X_test, y_train, y_test =train_test_split(muestra_entrenamiento,objetivo,test_size=0.1,random_state=1)
+search = StructuredDataRegressor(max_trials=15,loss='binary_crossentropy',optimizer='adam',metrics=['mse'])
 model=search.export_model()
-model.summary()
+
+history = model.fit(x=X_train,y=y_train,epochs=10,batch_size=32,validation_data=(X_test,y_test))
+
+# tf.keras.utils.plot_model(model,to_file="tmp.png",show_shapes=True,show_layer_names=True,show_layer_activations=True)
+
+
+# pyplot.title('Loss / Mean Squared Error')
+# pyplot.plot(history.history['loss'],label='train')
+# pyplot.plot(history.history['val_loss'],label='test')
+# pyplot.legend()
+# pyplot.show()
+# model.save('./guardados/save.tf')
+# model.summary()
 # search.fit()
-# modelo.save_weights("./guardados/save1")
+# modelo.save_weights(".
 
 
