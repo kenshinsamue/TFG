@@ -1,0 +1,21 @@
+
+
+path = "diccionarios/muestras/nuevos/muestra_1.csv"
+
+..
+model = nn.Sequential(
+  nn.Linear(n_inputs,100),
+  nn.ReLU(),
+  nn.Dropout(p=0.2),
+  nn.Linear(100,n_outputs),
+  nn.ReLU(),
+  nn.Dropout(p=0.2)
+)
+
+#  ------ Loss y optimizer --------
+
+learning_rate =0.01
+funcion_loss = nn.MSELoss()
+optimizer = torch.optim.SGD(model.parameters(),lr=learning_rate)
+
+num_epoch = 600

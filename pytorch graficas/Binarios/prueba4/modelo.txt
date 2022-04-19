@@ -1,0 +1,27 @@
+* Se agrega una nueva capa, se ve que los mejores resultados estan con el formato 80/80 en la primera capa,
+    en la segunda sera 80/100*
+
+
+#  ---------- Modelo --------------
+# model = nn.Linear(n_inputs,n_outputs)
+
+model = nn.Sequential(
+  nn.Linear(n_inputs,80),
+  nn.ReLU(),
+  nn.Dropout(p=0.01),
+  nn.Linear(80,100),
+  nn.ReLU(),
+  nn.Dropout(p=0.01),
+  nn.Linear(100,80),
+  nn.ReLU(),
+  nn.Dropout(p=0.01),
+  nn.Linear(80,n_outputs)
+)
+
+#  ------ Loss y optimizer --------
+
+learning_rate =0.01
+funcion_loss = nn.MSELoss()
+optimizer = torch.optim.Adam(model.parameters(),lr=learning_rate)
+
+num_epoch = 100

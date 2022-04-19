@@ -1,0 +1,27 @@
+model = nn.Sequential(
+  nn.Linear(n_inputs,200),
+  nn.ReLU(),
+  nn.Dropout(p=0.2),
+  nn.Linear(200,50),
+  nn.ReLU(),
+  nn.Dropout(p=0.2),
+  nn.Linear(50,120),
+  nn.ReLU(),
+  nn.Dropout(p=0.2),  
+  nn.Linear(120,100),
+  nn.ReLU(),
+  nn.Dropout(p=0.2),  
+  nn.Linear(100,100),
+  nn.ReLU(),
+  nn.Dropout(p=0.2),
+  nn.Linear(100,200),
+  nn.ReLU(),
+  nn.Dropout(p=0.2),
+  nn.Linear(200,n_outputs)
+)
+
+#  ------ Loss y optimizer --------
+
+learning_rate =0.005
+funcion_loss = nn.MSELoss()
+optimizer = torch.optim.Adam(model.parameters(),lr=learning_rate)

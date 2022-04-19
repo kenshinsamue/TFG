@@ -1,0 +1,33 @@
+& se han agregado varias capas de 100 neuronas*
+
+
+path = "diccionarios/muestras/nuevos/muestra_1.csv"
+
+
+model = nn.Sequential(
+  nn.Linear(n_inputs,80),
+  nn.ReLU(),
+  nn.Dropout(p=0.2),
+  nn.Linear(80,80),
+  nn.ReLU(),
+  nn.Dropout(p=0.1),
+  nn.Linear(80,120),
+  nn.ReLU(),
+  nn.Dropout(p=0.1),
+  nn.Linear(120,100),
+  nn.ReLU(),
+  nn.Dropout(p=0.2),
+  nn.Linear(100,100),
+  nn.ReLU(),
+  nn.Linear(100,100),
+  nn.ReLU(),
+  nn.Linear(100,n_outputs)
+)
+
+#  ------ Loss y optimizer --------
+
+learning_rate =0.01
+funcion_loss = nn.MSELoss()
+optimizer = torch.optim.Adam(model.parameters(),lr=learning_rate)
+
+num_epoch = 100

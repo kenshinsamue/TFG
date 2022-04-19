@@ -1,0 +1,18 @@
+
+* Se ha agregado una capa oculta *  
+
+model = nn.Sequential(
+  nn.Linear(n_inputs,200),
+  nn.ReLU(),
+  nn.Dropout(p=0.2),
+  nn.Linear(200,150),
+  nn.ReLU(),
+  nn.Dropout(p=0.2),
+  nn.Linear(150,n_outputs)
+)
+
+#  ------ Loss y optimizer --------
+
+learning_rate =0.005
+funcion_loss = nn.MSELoss()
+optimizer = torch.optim.Adam(model.parameters(),lr=learning_rate)
