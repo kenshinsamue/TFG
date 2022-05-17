@@ -1147,7 +1147,7 @@ def To_Hex(valor,size):
 
 
 
-fichero = open("../ML/diccionario/parte57_nuevo.csv","a+")
+fichero = open("../diccinario/original/muestra1.csv","w")
 linea = ""
 # mac = "B8:27:EB:B1:DD:38"
 protocolo = E0()
@@ -1160,7 +1160,7 @@ z = 0
 x_max = int(pow(2,48))
 y_max = int(pow(2,128))
 z_max = int(pow(2,32))
-while True:
+for cuenta in range(0,10000000) :
   protocolo = E0()
   x = random.randint(0,x_max)
   y = random.randint(0,y_max)
@@ -1179,7 +1179,10 @@ while True:
   protocolo.clocking()
   Z = To_Hex(protocolo.get_z(),128)
   linea = mac + ","+ck+","+clk+","+Z
-  print(linea)
+  # print(linea)
+  if cuenta %1000 == 0:
+    valor = (cuenta/10000000)*100
+    print ("{}%".format(valor))
   fichero.write(linea+"\n")
    
   

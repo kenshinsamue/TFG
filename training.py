@@ -3,7 +3,7 @@ import csv
 import pathlib
 
 from matplotlib.colors import hexColorPattern
-PATH = "diccionarios/partes/"
+PATH = "diccinario"
 FICHEROS = 0
 
 
@@ -192,13 +192,13 @@ def modificarcsv():
     cabecera.append("Z{}".format(x))
 
   for i in range(1,FICHEROS+1):
-    with open("{}/originales/parte{}_nuevo.csv".format(PATH,i),'r') as source:
+    with open("{}/original/muestra{}.csv".format(PATH,i),'r') as source:
       reader = csv.reader(source)
       
-      with open("{}muestra{}_bin_.csv".format(PATH,i),'w') as result:
+      with open("{}/binario/muestra{}_bin_.csv".format(PATH,i),'w') as result:
         writter = csv.writer(result)
         for r in reader:         
-          if r == ['BDADDR','CLK', 'Z']:
+          if r == ['BDADDR','CK','CLK', 'Z']:
             cabecera = []
             for x in range(48):
               cabecera.append("MAC{}".format(x))
@@ -224,7 +224,7 @@ def modificarcsv():
 
 
 count=0
-for path in pathlib.Path("{}/originales".format(PATH)).iterdir():
+for path in pathlib.Path("{}/original/".format(PATH)).iterdir():
   if path.is_file():
     count+=1
 FICHEROS = count

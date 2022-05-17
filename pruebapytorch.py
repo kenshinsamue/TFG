@@ -10,7 +10,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 
-path = "diccionarios/partes/muestra1_hex_.csv"
+path = "diccionario/binario/muestra1_bin_.csv"
 dataset = pd.read_csv(path,skiprows=0,dtype=np.float32)
 
 # *------------- Separacion entre los datasets de inputs/outputs ------------------*

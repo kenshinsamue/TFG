@@ -9,11 +9,17 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-
-path = "diccionarios/partes/binario/muestra1_bin_.csv"
+# device = torch.cuda.device(0)
+path = "diccionario/binario/muestra1_bin_.csv"
 dataset = pd.read_csv(path,skiprows=0,dtype=np.float32)
-# aux_ds = pd.read_csv("diccionarios/partes/binario/muestra2_bin_.csv",skiprows=0,dtype=np.float32)
-# dataset = dataset.append(aux_ds)
+aux_ds = pd.read_csv("diccionario/binario/muestra2_bin_.csv",skiprows=0,dtype=np.float32)
+dataset = dataset.append(aux_ds)
+aux_ds = pd.read_csv("diccionario/binario/muestra3_bin_.csv",skiprows=0,dtype=np.float32)
+dataset = dataset.append(aux_ds)
+aux_ds = pd.read_csv("diccionario/binario/muestra4_bin_.csv",skiprows=0,dtype=np.float32)
+dataset = dataset.append(aux_ds)
+
+del aux_ds
 # *------------- Separacion entre los datasets de inputs/outputs ------------------*
 headers = []
 for x in range(32):
@@ -33,21 +39,14 @@ del(headers)
 del(resultados)
 del(result)
 
-
 x = torch.from_numpy(x)
 y = torch.from_numpy(y)
+
+# x = x.cuda()
+# y = y.cuda()
+
+
 # *------------- /Conversion a un dataset de pytorch ------------------*
-# *------------- Normalizacion ------------------*
-# x_mean = torch.mean(x,dim=0)
-# x_data_var = torch.var(x,dim=0)
-
-# y_mean = torch.mean(y,dim=0)
-# y_data_var = torch.var(y,dim=0)
-
-# x = (x+x_data_var)+x_mean
-# y = (y+y_data_var)+y_mean
-
-# *------------- /Normalizacion ------------------*
 # *------------- Separacion de datos en entrenamiento y prueba ------------------*
 X_train, X_test, y_train, y_test =train_test_split(x,y,test_size=0.2, train_size=0.8,random_state=1)
 
@@ -57,7 +56,6 @@ n_outputs = y_train.shape[1]
 
 del(x)
 del(y)
-
 
 # #  ---------- Modelo --------------
 
@@ -75,6 +73,8 @@ model = nn.Sequential(
   nn.Sigmoid()
 )
 
+
+# model = model.cuda()
 # #  ------ Loss y optimizer --------
 
 learning_rate =0.01
@@ -95,31 +95,14 @@ for epoch in range(num_epoch):
   loss.backward()
   # # actualizacion
   optimizer.step()
-  # optimizer.zero_grad()
-  
-#   model.eval()
-#   target = model(X_test)
-#   loss_t = funcion_loss(target,y_test)
-#   loss_array.append(loss.item())
-#   val_loss_array.append(loss_t.item())
-#   model.train()
+  optimizer.zero_grad()
+  model.eval()
+  target = model(X_test)
+  loss_t = funcion_loss(target,y_test)
+  loss_array.append(loss.item())
+  val_loss_array.append(loss_t.item())
+  model.train()
 
-#   if(epoch+1)%50 == 0:
-#     print(f'epoch: {epoch+1}, loss = {loss.item():.6f}, validation_loss = {loss_t.item():.6f}')
+  print(f'epoch: {epoch+1}, loss = {loss.item():.6f}, validation_loss = {loss_t.item():.6f}')
 
-
-# # MAC0,MAC1,MAC2,MAC3,MAC4,MAC5,MAC6,MAC7,MAC8,MAC9,MAC10,MAC11,CLK0,CLK1,CLK2,CLK3,CLK4,CLK5,CLK6,CLK7,Z0,Z1,Z2,Z3,Z4,Z5,Z6,Z7,Z8,Z9,Z10,Z11,Z12,Z13,Z14,Z15,Z16,Z17,Z18,Z19,Z20,Z21,Z22,Z23,Z24,Z25,Z26,Z27,Z28,Z29,Z30,Z31
-# # 4   ,5   ,0   ,15  ,4   ,6   ,9   ,8   ,14  ,4   ,14   ,3    ,11  ,4   ,7   ,0   ,4   ,5   ,1   ,2   ,7,8,5,14,9,4,10,7,2,15,6,3,2,8,5,6,2,11,0,5,5,6,12,11,9,15,9,7,11,14,0,3
-
-# # inputs_ = torch.tensor([4   ,5   ,0   ,15  ,4   ,6   ,9   ,8   ,14  ,4   ,14   ,3    ,11  ,4   ,7   ,0   ,4   ,5   ,1   ,2 ],dtype=torch.float32)
-# # resultados = torch.tensor([7,8,5,14,9,4,10,7,2,15,6,3,2,8,5,6,2,11,0,5,5,6,12,11,9,15,9,7,11,14,0,3],dtype=torch.float32)
-
-# # estimados = model(inputs_)
-
-# # print (estimados)
-# # print(resultados)
-# plt.title('Loss / MSE')
-# plt.plot(loss_array,label='train')
-# plt.plot(val_loss_array,label='test')
-# plt.legend()
-# plt.show()
+torch.save(model, "modelo.pth")
