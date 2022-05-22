@@ -5,7 +5,7 @@ from dbus import Interface
 from numpy import interp 
 import pyshark
 from pyshark.capture.pipe_capture import PipeCapture
-
+# 50:8e:49:df:03:9f
 
 # Apartado de valores constantes 
 # Establecemos el nombre del fichero creado
@@ -13,10 +13,36 @@ FILE_PCAP = 'informacion.pcap'
 SCRIPT = "iniciar.sh"
 LOG = 'registros.log'
 
+
+def main (MAC) :
+  valores = parsearMAC(MAC)
+  #  Iniciamos la ejecucion por parte de ubertooth para capturar los paquetes y los logs de los mismos
+  ejecutarComando(valores)
+  #  creamos variables globales para guardar informacion
+  global RegistroLog
+  global Data
+  Data = []
+  RegistroLog = leerLog()
+  # Abrimos el fichero .pcap que es el que contiene la informacion relativa a los paquetes capturados
+  with open(FILE_PCAP) as pcap:
+    capture = PipeCapture(pipe=pcap,use_json=True,include_raw=True)
+    capture.apply_on_packets(registro_callback)
+  return Data
+
+
+# Metodo que obtiene una direccion mac en su formato hexadecimal y lo pone sin puntos y en minuscula 
+def parsearMAC(MAC):
+  MAC = MAC.replace(":","")
+  MAC= MAC.lower()
+  # 508e49df039f
+  valores = [MAC[4:6],MAC[6::]]
+  return valores
+
+# Metodo que ejecuta el script de ubertooth
 def ejecutarComando(valores): 
   os.system('bash {} -u {} -l {} -f {} -t {} -r {}'.format(SCRIPT,valores[0],valores[1],FILE_PCAP,60,LOG))
 
-
+# metodo que se encarga de leer todos los mensajes de ubertooth y filtrar solo los que empiezen por "systime="
 def leerLog():
   logFinal=[]
   with open(LOG) as log:
@@ -41,15 +67,16 @@ def registro_callback(pkt):
   n=0
   vacio = True
   datos= ""
+  # guarda el paquete entero en formato raw (hex)
   datos = obtener_raw_data(pkt.get_packet_raw())
-  
+
   ch = pkt['BTBREDR_RF'].rf_channel
   err = pkt['BTBREDR_RF'].access_address_offenses
   s = pkt['BTBREDR_RF'].signal_power
   n = pkt['BTBREDR_RF'].noise_power
 
   registro = Obtener_registro(RegistroLog,ch,err,s,n)
-
+  clkn = get_clkn(registro)
   if datos == "":
     pass
   else:
@@ -58,13 +85,12 @@ def registro_callback(pkt):
         vacio = False
         break
     if vacio == True:
-
       pass
     else:
-
-      sub_data.append(registro)
+      sub_data.append(clkn)
       sub_data.append(datos)
       Data.append(sub_data)
+      print(Data)
 
 #  Metodo que se encarga de obtener los datos encriptados del paquete
 def obtener_raw_data (vector_datos):
@@ -101,33 +127,15 @@ def Obtener_registro(registros,ch,err,s,n):
 
 # Metodo que se encarga de buscar el valor del registro del reloj del adaptador maestro de la comunicacion
 def get_clkn(registro):
-  clkn_index = registro.index("clkn=")
-  clk_offset_index = registro.index("clk_offset=")
-  clkn_value = registro[(clkn_index+5):(clk_offset_index-1)]
-  return clkn_value
-
-def parsearMAC(MAC):
-  MAC = MAC.replace(":","")
-  MAC= MAC.lower()
-  # 508e49df039f
-  valores = [MAC[4:6],MAC[6::]]
-  return valores
-
-
-def main (MAC) :
-  valores = parsearMAC(MAC)
-  #  Iniciamos la ejecucion por parte de ubertooth para capturar los paquetes y los logs de los mismos
-  ejecutarComando(valores)
-  #  creamos variables globales para guardar informacion
-  global RegistroLog
-  global Data
-  Data = []
-  RegistroLog = leerLog()
-  # Abrimos el fichero .pcap que es el que contiene la informacion relativa a los paquetes capturados
-  with open(FILE_PCAP) as pcap:
-    capture = PipeCapture(pipe=pcap,use_json=True,include_raw=True)
-    capture.apply_on_packets(registro_callback)
-  print (Data)
+  print(registro)
+  print("-----------------------------------")
+  registro_nuevo=[]
+  for x in registro:  
+    clkn_index = x.index("clkn=")
+    clk_offset_index = x.index("clk_offset=")
+    valor = registro[(clkn_index+5):(clk_offset_index-1)]
+    registro_nuevo.append(valor)
+  return registro_nuevo
 
 
 if __name__ == "__main__":

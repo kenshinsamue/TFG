@@ -64,8 +64,19 @@ def Menu():
     MAC = ComprobarMac(MAC)
     os.system("clear")
     print("Estamos analizando el trafico de paquetes, mantengase a la espera")
-    Ubertooth.main(MAC)
-    
+    datos = Ubertooth.main(MAC)
+    DeepLearning(MAC,datos)
+
+#metodo que se encarga de recoger los datos necesarios para ejecutar los procesos de deep learning, transformar los datos de entero/hex a binario y viceversa para ver el resultado
+def DeepLearning( MAC, datos):
+  # modificar datos en binario
+
+  # cargar el modelo
+
+  # predecir 
+
+  # transformar datos en hex 
+  pass
 # main, punto de inicio    
 def main() -> None:
   if sys.platform not in PLATAFORMAS_PERMITIDAS:
