@@ -1,4 +1,35 @@
-systime=1653227426 ch=76 LAP=df039f err=0 clkn=115400 clk_offset=1148 s=-37 n=-55 snr=18
+systime=1653923172 ch=45 LAP=df039f err=0 clkn=9444 clk_offset=1801 s=-38 n=-55 snr=17
 offset < CLK_TUNE_TIME
-CLK100ns Trim: 5148
-systime=1653227446 ch=56 LAP=df039f err=1 clkn=179764 clk_offset=470 s=-46 n=-55 snr=9
+CLK100ns Trim: 5801
+systime=1653923173 ch=38 LAP=df039f err=0 clkn=12240 clk_offset=2181 s=-42 n=-55 snr=13
+systime=1653923173 ch=38 LAP=df039f err=2 clkn=12250 clk_offset=2188 s=-37 n=-55 snr=18
+systime=1653923182 ch=36 LAP=df039f err=0 clkn=41960 clk_offset=1363 s=-41 n=-55 snr=14
+systime=1653923182 ch=36 LAP=df039f err=2 clkn=41966 clk_offset=1378 s=-38 n=-55 snr=17
+systime=1653923185 ch=72 LAP=df039f err=1 clkn=53396 clk_offset=1047 s=-40 n=-55 snr=15
+systime=1653923185 ch=72 LAP=df039f err=0 clkn=53406 clk_offset=1077 s=-40 n=-55 snr=15
+offset < CLK_TUNE_TIME
+CLK100ns Trim: 5077
+Clock drifted -1173 in 13.738125 s. -8 PPM too slow.
+systime=1653923189 ch=40 LAP=df039f err=1 clkn=63418 clk_offset=2196 s=-39 n=-55 snr=16
+CLK6 = 0xc found after 3 total packets.
+
+Calculating complete hopping sequence.
+Hopping sequence calculated.
+26545 initial CLK1-27 candidates
+systime=1653923204 ch=53 LAP=df039f err=0 clkn=113102 clk_offset=2005 s=-38 n=-55 snr=17
+systime=1653923212 ch=48 LAP=df039f err=1 clkn=136822 clk_offset=1903 s=-37 n=-55 snr=18
+systime=1653923212 ch=52 LAP=df039f err=1 clkn=137990 clk_offset=1902 s=-39 n=-55 snr=16
+systime=1653923213 ch=43 LAP=df039f err=0 clkn=140268 clk_offset=1885 s=-39 n=-55 snr=16
+offset < CLK_TUNE_TIME
+CLK100ns Trim: 5885
+Clock drifted -365 in 27.144375 s. -1 PPM too slow.
+systime=1653923215 ch=31 LAP=df039f err=0 clkn=146888 clk_offset=2236 s=-42 n=-55 snr=13
+systime=1653923215 ch=31 LAP=df039f err=0 clkn=146898 clk_offset=2244 s=-37 n=-55 snr=18
+systime=1653923221 ch=46 LAP=df039f err=0 clkn=168136 clk_offset=2216 s=-38 n=-55 snr=17
+systime=1653923221 ch=46 LAP=df039f err=0 clkn=168148 clk_offset=2240 s=-38 n=-55 snr=17
+systime=1653923224 ch=38 LAP=df039f err=0 clkn=176154 clk_offset=2215 s=-37 n=-55 snr=18
+systime=1653923224 ch=42 LAP=df039f err=0 clkn=177454 clk_offset=2224 s=-39 n=-55 snr=16
+CLK6 = 0xc found after 6 total packets.
+
+Found hopping sequence in cache.
+26572 initial CLK1-27 candidates

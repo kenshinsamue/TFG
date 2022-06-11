@@ -27,6 +27,7 @@ def main (MAC) :
   with open(FILE_PCAP) as pcap:
     capture = PipeCapture(pipe=pcap,use_json=True,include_raw=True)
     capture.apply_on_packets(registro_callback)
+  # print(Data)
   return Data
 
 
@@ -90,7 +91,6 @@ def registro_callback(pkt):
       sub_data.append(clkn)
       sub_data.append(datos)
       Data.append(sub_data)
-      print(Data)
 
 #  Metodo que se encarga de obtener los datos encriptados del paquete
 def obtener_raw_data (vector_datos):
@@ -127,13 +127,11 @@ def Obtener_registro(registros,ch,err,s,n):
 
 # Metodo que se encarga de buscar el valor del registro del reloj del adaptador maestro de la comunicacion
 def get_clkn(registro):
-  print(registro)
-  print("-----------------------------------")
   registro_nuevo=[]
   for x in registro:  
     clkn_index = x.index("clkn=")
     clk_offset_index = x.index("clk_offset=")
-    valor = registro[(clkn_index+5):(clk_offset_index-1)]
+    valor = x[(clkn_index+5):(clk_offset_index-1)]
     registro_nuevo.append(valor)
   return registro_nuevo
 

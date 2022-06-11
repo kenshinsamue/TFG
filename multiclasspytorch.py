@@ -12,19 +12,18 @@ from sklearn.model_selection import train_test_split
 # device = torch.cuda.device(0)
 path = "diccionario/binario/muestra1_bin_.csv"
 dataset = pd.read_csv(path,skiprows=0,dtype=np.float32)
-aux_ds = pd.read_csv("diccionario/binario/muestra2_bin_.csv",skiprows=0,dtype=np.float32)
-dataset = dataset.append(aux_ds)
-aux_ds = pd.read_csv("diccionario/binario/muestra3_bin_.csv",skiprows=0,dtype=np.float32)
-dataset = dataset.append(aux_ds)
-aux_ds = pd.read_csv("diccionario/binario/muestra4_bin_.csv",skiprows=0,dtype=np.float32)
-dataset = dataset.append(aux_ds)
+# aux_ds = pd.read_csv("diccionario/binario/muestra2_bin_.csv",skiprows=0,dtype=np.float32)
+# dataset = dataset.append(aux_ds)
+# aux_ds = pd.read_csv("diccionario/binario/muestra3_bin_.csv",skiprows=0,dtype=np.float32)
+# dataset = dataset.append(aux_ds)
+# aux_ds = pd.read_csv("diccionario/binario/muestra4_bin_.csv",skiprows=0,dtype=np.float32)
+# dataset = dataset.append(aux_ds)
 
-del aux_ds
+# del aux_ds
 # *------------- Separacion entre los datasets de inputs/outputs ------------------*
 headers = []
-for x in range(32):
+for x in range(128):
   headers.append("Z{}".format(x))
-
 resultados=[]
 for x in headers:
   resultados.append(dataset.pop(x)) 
@@ -103,6 +102,11 @@ for epoch in range(num_epoch):
   val_loss_array.append(loss_t.item())
   model.train()
 
-  print(f'epoch: {epoch+1}, loss = {loss.item():.6f}, validation_loss = {loss_t.item():.6f}')
+  if(epoch+1)%50 == 0:
+    print(f'epoch: {epoch+1}, loss = {loss.item():.4f}, validation_loss = {loss_t.item():.4f}')
 
-torch.save(model, "modelo.pth")
+plt.title('Loss / MSE')
+plt.plot(loss_array,label='train')
+plt.plot(val_loss_array,label='test')
+plt.legend()
+plt.show()

@@ -2,8 +2,12 @@ import sys
 import platform
 import os
 import re
+import torch
+import numpy as np
+from unittest import result
 from metodos import *
 import UbertoothSniff as Ubertooth
+from training import BitArray
 #creamos una lista de plataformas permitidas
 PLATAFORMAS_PERMITIDAS = {'linux'}
 
@@ -65,18 +69,176 @@ def Menu():
     os.system("clear")
     print("Estamos analizando el trafico de paquetes, mantengase a la espera")
     datos = Ubertooth.main(MAC)
-    DeepLearning(MAC,datos)
+    data = DeepLearning(MAC,datos)
+    if data is None :
+      exit
+    else:
+      paquete = desencriptar(data)
+      for pkt in paquete:
+        print ("El mensaje cifrado es : {}".format(pkt[1]))
+        print ("El mensaje descifrado es : {}".format(pkt[2]))
+        msg = pkt[2]
+        msg = bytes.fromhex(msg)
+        clear_msg = msg.decode("charmap")
+        print ("el mensaje es : {}".format(clear_msg))
+      # print (paquete)
 
+def desencriptar(datos):
+  resultado = []
+  r=[]
+  for paquete in datos:
+    resultado = []
+    clave = paquete[0]
+    mensaje = paquete[1]
+    mensaje_bits = BitArray(mensaje)
+    for bit in range(len(mensaje_bits)) :
+      resultado.append(mensaje_bits[bit] ^ clave[(bit%128)])
+    # print("resultado --> {}".format(resultado))
+    resultado = binTohex(resultado)
+    # print ("{},{}".format(mensaje,resultado))
+    r.append([clave,mensaje,resultado])
+  return r
+
+def binTohex (valor):
+  cadena=""
+  bits = []
+  cont =0 
+  val =0
+  for x in valor :
+    bits.append(x)
+    # print ("el valor de los bits es : {}".format(bits))
+    if((cont%4) == 3):
+      for y in bits:
+        # print ("y->>{}".format(y))
+        val=val<<1
+        val = val | y
+      # print("el val es: {}".format(val))
+      # print("el valor en hexadecimal generado es : {}".format(getHex(val)))
+      cadena =cadena + getHex(val)
+      val = 0
+      bits = []
+    cont +=1
+  return cadena
+
+def getHex(val):
+  r=""
+  if val == 0:
+    r="0"
+  elif val == 1:
+    r="1"
+  elif val == 2:
+    r="2"
+  elif val == 3:
+    r="3"
+  elif val == 4:
+    r="4"
+  elif val == 5:
+    r="5"
+  elif val == 6:
+    r="6"
+  elif val == 7:
+    r="7"
+  elif val == 8:
+    r="8"
+  elif val == 9:
+    r="9"
+  elif val == 10:
+    r="a"
+  elif val == 11:
+    r="b"
+  elif val == 12:
+    r="c"
+  elif val == 13:
+    r="d"
+  elif val == 14:
+    r="e"
+  elif val == 15:
+    r="f"
+  return r
+  
 #metodo que se encarga de recoger los datos necesarios para ejecutar los procesos de deep learning, transformar los datos de entero/hex a binario y viceversa para ver el resultado
+def ToBinaryDec(decimal):
+  decimal = int(decimal)
+  resultado = []
+  while int(decimal) >1:
+    r  = int(decimal)%2
+    decimal = int(decimal)/2
+    resultado.append(r)
+  resultado.append(1)
+  while len(resultado) != 32:
+    resultado.append(0)
+  tmp = []
+  for x in range(len(resultado)):
+    tmp.append(resultado[31-x])
+  resultado = tmp
+  del tmp
+  return resultado
+  
+def ToBinaryMAC(MAC):
+  tmp=""
+  for x in MAC:
+    if(x != ":"):
+      tmp+=x
+  resultado = BitArray(tmp)
+  return resultado
+# [  [[1234,12342345,354],asdfasdfasdf],[[]]
+
+def Limpiar(valor):
+  while len(valor) > 48:
+    valor.pop(48)
+  return valor
+
 def DeepLearning( MAC, datos):
-  # modificar datos en binario
+  tmp = []
+  mac = ToBinaryMAC(MAC) 
+  bits = []
+  resultados = []
+  result = []
+  if datos == []:
+    print("no se han conseguido paquetes")
+    return
+  else: 
+    # guardamos los bits de la direccion mac
+    for x in mac:
+      bits.append(x)
+    # [[1234,12342345],354]  
+    for paquete in datos:
+      relojes = paquete[0]
+      datos = paquete[1]
+      
+      # [1234,12342345]
+      for clock in relojes:
+        # modificar datos en binario
+        clk = ToBinaryDec(clock)
+        tmp.append(clk)
+      
+      for x in tmp :
+        for y in x:
+          bits.append(y)
 
-  # cargar el modelo
+        # por cada uno de los relojes registrados ejecutamos comparacion
+        muestra = np.array(bits,dtype=np.float32)
+        data = torch.from_numpy(muestra)
+      
+        # cargar el modelo
+        model = torch.load("modelo.pth")
+        # predecir 
+        prediccion = model(data)
+        for elemento in range(128):
+          if prediccion[int(elemento)] >=0.5:
+            result.append(1)
+          else:
+            result.append(0)
+        r = []
+        r.append(result)
+        r.append(datos)
+        resultados.append(r)
+        bits = mac
+        bits = Limpiar(bits)
 
-  # predecir 
-
+  return resultados
   # transformar datos en hex 
-  pass
+  
 # main, punto de inicio    
 def main() -> None:
   if sys.platform not in PLATAFORMAS_PERMITIDAS:
