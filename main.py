@@ -6,8 +6,8 @@ import torch
 import numpy as np
 from unittest import result
 from metodos import *
-import UbertoothSniff as Ubertooth
-from training import BitArray
+import Sniffing.UbertoothSniff as Ubertooth
+from Sniffing.training import BitArray
 #creamos una lista de plataformas permitidas
 PLATAFORMAS_PERMITIDAS = {'linux'}
 
