@@ -1,35 +1,35 @@
 
-Trabajo de Fin de Grado : Análisis y Pentesting de la Tecnología Bluetooth
+# Trabajo de Fin de Grado : Análisis y Pentesting de la Tecnología Bluetooth
 
 Este proyecto utiliza la tecnologia Deep Learning para probar si el generador de cadena cifrante E0 es vulnerable. La implementacion utiliza pytorch como framework de DL 
 
 La estructura del proyecto viene dividida de la siguiente forma:
 
-App
+## App
 
 Es el directorio donde se guarda la aplicacion desarrollada en `Android Java`, de forma nativa.
 
-Bin
+## Bin
 
 Es el directorio donde se guardan librerias usadas de forma local, entre ellas se pueden encontrar `pyubertooth`, `scapy`, `structured_data_regressor` y `usb`
 
-BT
+## BT
 
 Es el directorio que almacena los diferentes programas que automatizan la comunicacion con el HCI y el BUS del sistema, tambien esta guardado el simulador de claves del generador E0
 
-Documentacion
+## Documentacion
 
 En este directorio se guarda documentacion que fue consultada de forma regular durante el desarrollo del proyecto
 
-Pruebas y resultados 
+## Pruebas y resultados 
 
 En este directorio se guardan las diferentes pruebas con modelos de deep learning, asi como pruebas para ver el rendimiento de los modelos dependiendo de la codificacion de los datos (binario o hexadecimal)
 
-Sniffing
+## Sniffing
 
 Contiene el conjunto de programas que permiten realizar el sniffing y el entrenamiento de la red neuronal 
 
-Test 
+## Test 
 
 Directorio con pruebas 
 
