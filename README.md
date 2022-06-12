@@ -37,17 +37,7 @@ Directorio con pruebas
 
 El programa principal es `main.py` y se apoya en `metodos.py` para acceder a las diferentes funcionalidades distribuidas a lo largo del proyecto. 
 
-1. si ejecutamos nos aparecera el siguiente error 
 
-`FileNotFoundError: [Errno 2] No such file or directory: b'liblibc.a'` 
-
-para solucionarlo : 
-
-```
- cd /usr/lib/x86_64-linux-gnu
- sudo ln -s -f libc.a liblibc.a
-```
-
-2. Instalar paquetes necesarios 
+Para instalar los paquetes necesarios de python ejecutar 
 
 `pip3 install -r requirements.txt`
