@@ -9,9 +9,9 @@ from pyshark.capture.pipe_capture import PipeCapture
 
 # Apartado de valores constantes 
 # Establecemos el nombre del fichero creado
-FILE_PCAP = 'informacion.pcap'
-SCRIPT = "iniciar.sh"
-LOG = 'registros.log'
+FILE_PCAP = 'Sniffing/informacion.pcap'
+SCRIPT = "Sniffing/iniciar.sh"
+LOG = 'Sniffing/registros.log'
 
 
 def main (MAC) :

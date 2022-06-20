@@ -223,12 +223,12 @@ def modificarcsv():
       source.close()
 
 
-# count=0
-# for path in pathlib.Path("{}/original/".format(PATH)).iterdir():
-#   if path.is_file():
-#     count+=1
-# FICHEROS = count
-# # resultado = ModificarMAC("AB:CD:DD")
-# # resultado = BitArray(ModificarMAC("01:23:45:67:89:AB"))
-# # print ("{}".format(resultado))    
-# modificarcsv()
+count=0
+for path in pathlib.Path("{}/original/".format(PATH)).iterdir():
+  if path.is_file():
+    count+=1
+FICHEROS = count
+# resultado = ModificarMAC("AB:CD:DD")
+# resultado = BitArray(ModificarMAC("01:23:45:67:89:AB"))
+# print ("{}".format(resultado))    
+modificarcsv()
